@@ -10,7 +10,7 @@ This reader contains an xml reader for laravel. This package can read xml files 
 You can install the package via composer:
 
 ```bash
-composer require acfbentveld/XML
+composer require acfbentveld/xml
 ```
 
 ### Changelog
