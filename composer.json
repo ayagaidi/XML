@@ -1,0 +1,52 @@
+{
+    "name": "acfbentveld/XML",
+    "description": "",
+    "keywords": [
+        "XML", "reader", "xml","laravel"
+    ],
+    "homepage": "https://github.com/ACFBentveld/XML",
+    "license": "MIT",
+    "version": "0.0.1",
+    "authors": [
+        {
+            "name": "Wim Pruiksma",
+            "email": "wim@acfbentveld.nl",
+            "homepage": "https://acfbentveld.nl/",
+            "role": "Lead developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        
+    },
+    "autoload": {
+        "psr-4": {
+            "ACFBentveld\\XML\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ACFBentveld\\XML\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "ACFBentveld\\XML\\XMLServiceProvider"
+            ],
+            "aliases": {
+                "XML": "ACFBentveld\\XML\\XMLFacade"
+            }
+        }
+    }
+}
