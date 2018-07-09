@@ -24,6 +24,14 @@ use the `path()` function to read the xml file.
     $xml = XML::path($path);
 ``` 
 
+## Debug
+Sometimes your xml file is not readable or does not exists int he path you pass to the XML reader.
+Well we don't want your whole page to blow up while you are developing. Use the `->debug()` to get a list of all erorrs.
+```php
+    $path = storage_path().'/my-xml.xml';
+    $xml = XML::path($path)->debug();  //returns an array with errors if there are any
+```
+
 
 ### Optimize
 Sometimes the exported xml has broken keys or you just don't like the idea that empty values are translated as objects in simpleXMl. Use the `optimze()` function to optimize the data for PHP. It repairs the keys and sets empty values as `NULL`.
