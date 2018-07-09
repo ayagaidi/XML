@@ -9,12 +9,40 @@ use File;
  */
 class XML
 {
-
+    /**
+     * Relative path to the file
+     *
+     * @var string
+     */
     protected $file_path;
+
+    /**
+     * THe readed xml object
+     *
+     * @var object
+     */
     protected $xml;
+
+    /**
+     * Raw xml object
+     *
+     * @var XMLObject
+     */
     protected $xml_object;
+
+    /**
+     * Optimized xml
+     *
+     * @var Collection
+     */
     protected $optimized;
-    public $error;
+
+    /**
+     * List of errors
+     *
+     * @var array
+     */
+    protected $errors = [];
 
     /**
      * Init the text class
@@ -31,19 +59,34 @@ class XML
     }
 
     /**
+     * Return list of errors
+     *
+     * @return array
+     */
+    public function debug()
+    {
+        return $this->errors;
+    }
+
+    /**
      * Read the xml file
      *
      */
     private function readFile()
     {
-        if(File::exists($this->file_path)){
+        if(is_readable($this->file_path)){
             try{
                 $this->xml_object = new \SimpleXMLElement($this->file_path, null, true);
                 $this->xml = $this->xml_object;
             }catch(\Exception $e){
-                $this->xml = false;
+                $this->xml_object = null;
+                $this->xml = null;
+                $this->errors[] = "Something went wrong while reading the file";
             }
+            return true;
         }
+        $this->errors[] = "File does not exists or is not readable";
+        return false;
     }
 
     /**
@@ -53,7 +96,9 @@ class XML
      */
     public function optimize()
     {
-        $this->optimized = $this->loopOptimize($this->xml);
+        if($this->xml){
+            $this->optimized = $this->loopOptimize($this->xml);
+        }
         return $this;
     }
 
@@ -175,6 +220,10 @@ class XML
      */
     public function raw()
     {
+        if(!$this->xml_object){
+            $this->errors[] = "XML Object is empty";
+            return [];
+        }
         return $this->xml_object;
     }
 
@@ -185,6 +234,10 @@ class XML
      */
     public function collect()
     {
+        if(!$this->xml && !$this->optimized){
+            $this->errors[] = "XML Object is empty";
+            return collect([]);
+        }
         $object = ($this->optimized)?$this->optimized:$this->xml;
         foreach($object as $key => $item){
             if(is_object($object)){
@@ -203,6 +256,10 @@ class XML
      */
     public function object()
     {
+        if(!$this->xml && !$this->optimized){
+            $this->errors[] = "XML Object is empty";
+            return new \stdClass();
+        }
         return ($this->optimized)?$this->optimized:$this->xml;
     }
 }
