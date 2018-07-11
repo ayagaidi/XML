@@ -262,4 +262,17 @@ class XML
         }
         return ($this->optimized)?$this->optimized:$this->xml;
     }
+	
+	/**
+     * Create a new xml document.
+     *
+     * @param string $encoding the encoding to use for the xml document. Defaults to "UTF-8".
+     * @param string $version the version to use for the xml document. Defaults to "1.0".
+     *
+     * @return \ACFBentveld\XML\XMLBuilder
+     */
+    public static function create(string $encoding = "UTF-8", string $version = "1.0")
+    {
+        return new XMLBuilder($encoding, $version);
+    }
 }
