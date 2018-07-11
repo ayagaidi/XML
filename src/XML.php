@@ -263,7 +263,7 @@ class XML
         return ($this->optimized)?$this->optimized:$this->xml;
     }
 	
-	/**
+    /**
      * Create a new xml document.
      *
      * @param string $encoding the encoding to use for the xml document. Defaults to "UTF-8".
