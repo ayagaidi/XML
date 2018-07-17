@@ -1,6 +1,6 @@
 {
     "name": "acfbentveld/xml",
-    "description": "",
+    "description": "A laravel XML reader",
     "keywords": [
         "XML", "reader", "xml","laravel"
     ],
