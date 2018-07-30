@@ -16,6 +16,12 @@ composer require acfbentveld/xml
 ## Usage
 This packages comes with a facade. You can use the package like this `\XML::` or use it in your class like `use XML;`
 
+This package can also export data to XML. 
+* [Export collection to xml](https://acfbentveld.github.io/XML/docs/export)
+* [Export view to xml](https://acfbentveld.github.io/XML/docs/export)
+
+
+
 ### Read xml file
 To read an xml file, it must be stored on the server. Call the file using the full path.
 use the `path()` function to read the xml file. 
