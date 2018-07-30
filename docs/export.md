@@ -6,6 +6,10 @@
 ## Exporting data to XML
 An easy way to export your data to XML is using the `XML::export` method. This method can load views or translate collections to XML.
 
+Checkout the import methods
+* [Import XML](https://acfbentveld.github.io/XML/)
+
+
 ### Methods
 Some importend methods you need to know about.
 * setName(`string $name`) if you want to change the tag name. Default `export`
