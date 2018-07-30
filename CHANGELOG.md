@@ -2,17 +2,15 @@
 
 All notable changes to `DataTables` will be documented in this file
 
-## 1.0.5
-- Added support for relations using the ->with() method
-- Fixed performance bugs
-- Added some more undiscovered bugs
+## 1.0.0
 
-## 1.0.4
-- Added support for sorting on relations
+- Added export support
 - Fixed performance bugs
-- Fixed search on relations bug
-- Added some more undiscovered bugs
+- Added loadView() method to export views to XML
+- Added loadCollection method to export collections to XML
 
-## 1.0.0 - 201X-XX-XX
+
+
+## 0.0.1 - 201X-XX-XX
 
 - initial release
