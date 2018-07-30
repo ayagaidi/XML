@@ -1,10 +1,12 @@
 <?php
+ namespace ACFBentveld\XML\Controllers;
+ use Illuminate\Support\Facades\View;
 
-namespace ACFBentveld\XML;
 
-use Illuminate\Support\Facades\View;
-
-class XMLBuilder
+ /**
+  * This class is depricated and will be removed in the next version
+  */
+ class XMLBuilder
 {
     /**
      * @var string the encoding of the xml document.
@@ -26,9 +28,7 @@ class XMLBuilder
      * @var string|boolean the name of the root tag. Set to false to disable the root tag.
      */
     protected $rootTag = "root";
-
-
-    /**
+     /**
      * XMLBuilder constructor.
      *
      * @param string $encoding the encoding to use for the xml document. Defaults to "UTF-8".
@@ -39,9 +39,7 @@ class XMLBuilder
         $this->encoding = $encoding;
         $this->version = $version;
     }
-
-
-    /**
+     /**
      * Load the view to use.
      *
      * @param string $name the name of the view.
@@ -55,9 +53,7 @@ class XMLBuilder
         $this->viewData = $data;
         return $this;
     }
-
-
-    /**
+     /**
      * Add data to pass to the view.
      *
      * @param mixed $data data to pass to the view.
@@ -72,9 +68,7 @@ class XMLBuilder
         $this->viewData = $data;
         return $this;
     }
-
-
-    /**
+     /**
      * Disable the root tag.
      *
      * @return $this
@@ -83,9 +77,7 @@ class XMLBuilder
     {
         return $this->setRootTag(false);
     }
-
-
-    /**
+     /**
      * Set the root tag for the document.
      *
      * @param string|boolean $tag the name to use as the root tag. Set to `false` to disable.
@@ -97,9 +89,7 @@ class XMLBuilder
         $this->rootTag = $tag;
         return $this;
     }
-
-
-    /**
+     /**
      * Get the xml as a string.
      *
      * @return string
@@ -111,9 +101,7 @@ class XMLBuilder
             . View::make($this->view, $this->viewData)->render()
             . $this->closeRootTag();
     }
-
-
-    /**
+     /**
      * Make the XML Prolog tag.
      *
      * @return string
@@ -122,9 +110,7 @@ class XMLBuilder
     {
         return "<?xml version=\"{$this->version}\" encoding=\"{$this->encoding}\"?>" . PHP_EOL;
     }
-
-
-    /**
+     /**
      * Make the root tag. Returns `null` if the root tag is disabled.
      *
      * @return null|string
@@ -133,9 +119,7 @@ class XMLBuilder
     {
         return !$this->rootTag ? null : "<{$this->rootTag}>";
     }
-
-
-    /**
+     /**
      * Make the closing tag for the root tag. Returns `null` if the root tag is disabled.
      *
      * @return null|string

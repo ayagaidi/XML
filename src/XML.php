@@ -1,6 +1,8 @@
 <?php
 
 namespace ACFBentveld\XML;
+use ACFBentveld\XML\Controllers\ExportController;
+use ACFBentveld\XML\Controllers\XMLBuilder;
 use File;
 
 /**
@@ -9,40 +11,12 @@ use File;
  */
 class XML
 {
-    /**
-     * Relative path to the file
-     *
-     * @var string
-     */
+
     protected $file_path;
-
-    /**
-     * THe readed xml object
-     *
-     * @var object
-     */
     protected $xml;
-
-    /**
-     * Raw xml object
-     *
-     * @var XMLObject
-     */
     protected $xml_object;
-
-    /**
-     * Optimized xml
-     *
-     * @var Collection
-     */
     protected $optimized;
-
-    /**
-     * List of errors
-     *
-     * @var array
-     */
-    protected $errors = [];
+    public $error;
 
     /**
      * Init the text class
@@ -59,13 +33,28 @@ class XML
     }
 
     /**
-     * Return list of errors
+     * Create export and save it
      *
-     * @return array
+     * @param type $function
+     * @return void
      */
-    public function debug()
+    public static function export($function = false)
     {
-        return $this->errors;
+        $class = new ExportController;
+        return $class->boot($function);
+    }
+
+    /**
+     * DEPRICATED FUNCTION !!! Will be removed in next version 1.*
+     * THIS FUNCTIONALITY WILL BE MOVED TO export()
+     *
+     * @param string $encoding
+     * @param string $version
+     * @return \ACFBentveld\XML\XMLBuilder
+     */
+    public static function create(string $encoding = "UTF-8", string $version = "1.0")
+    {
+        return new XMLBuilder($encoding, $version);
     }
 
     /**
@@ -74,19 +63,14 @@ class XML
      */
     private function readFile()
     {
-        if(is_readable($this->file_path)){
+        if(File::exists($this->file_path)){
             try{
                 $this->xml_object = new \SimpleXMLElement($this->file_path, null, true);
                 $this->xml = $this->xml_object;
             }catch(\Exception $e){
-                $this->xml_object = null;
-                $this->xml = null;
-                $this->errors[] = "Something went wrong while reading the file";
+                $this->xml = false;
             }
-            return true;
         }
-        $this->errors[] = "File does not exists or is not readable";
-        return false;
     }
 
     /**
@@ -96,9 +80,7 @@ class XML
      */
     public function optimize()
     {
-        if($this->xml){
-            $this->optimized = $this->loopOptimize($this->xml);
-        }
+        $this->optimized = $this->loopOptimize($this->xml);
         return $this;
     }
 
@@ -210,7 +192,8 @@ class XML
     {
         $dotreplace     = strtolower(str_replace('.', '_', $key));
         $spacereplace   = str_replace(' ', '_', $dotreplace);
-        return $spacereplace;
+        $dashreplace   = str_replace('-', '_', $spacereplace);
+        return $dashreplace;
     }
 
     /**
@@ -220,10 +203,6 @@ class XML
      */
     public function raw()
     {
-        if(!$this->xml_object){
-            $this->errors[] = "XML Object is empty";
-            return [];
-        }
         return $this->xml_object;
     }
 
@@ -234,10 +213,6 @@ class XML
      */
     public function collect()
     {
-        if(!$this->xml && !$this->optimized){
-            $this->errors[] = "XML Object is empty";
-            return collect([]);
-        }
         $object = ($this->optimized)?$this->optimized:$this->xml;
         foreach($object as $key => $item){
             if(is_object($object)){
@@ -256,23 +231,6 @@ class XML
      */
     public function object()
     {
-        if(!$this->xml && !$this->optimized){
-            $this->errors[] = "XML Object is empty";
-            return new \stdClass();
-        }
         return ($this->optimized)?$this->optimized:$this->xml;
-    }
-	
-    /**
-     * Create a new xml document.
-     *
-     * @param string $encoding the encoding to use for the xml document. Defaults to "UTF-8".
-     * @param string $version the version to use for the xml document. Defaults to "1.0".
-     *
-     * @return \ACFBentveld\XML\XMLBuilder
-     */
-    public static function create(string $encoding = "UTF-8", string $version = "1.0")
-    {
-        return new XMLBuilder($encoding, $version);
     }
 }

@@ -24,14 +24,6 @@ use the `path()` function to read the xml file.
     $xml = XML::path($path);
 ``` 
 
-## Debug
-Sometimes your xml file is not readable or does not exists int he path you pass to the XML reader.
-Well we don't want your whole page to blow up while you are developing. Use the `->debug()` to get a list of all erorrs.
-```php
-    $path = storage_path().'/my-xml.xml';
-    $xml = XML::path($path)->debug();  //returns an array with errors if there are any
-```
-
 
 ### Optimize
 Sometimes the exported xml has broken keys or you just don't like the idea that empty values are translated as objects in simpleXMl. Use the `optimze()` function to optimize the data for PHP. It repairs the keys and sets empty values as `NULL`.
@@ -70,46 +62,6 @@ Export the data as a SimpleXMLObject (optimize won't work with the function `raw
     dd($xml);
 ```
 
-# Generating XML documents using Blade templates
-
-## Changing the encoding / version
-You can change the encoding / version of the xml document by passing them to the `create` method
-
-```php
-$xml = XML::create($encoding = "UTF-8", $version = "1.0");
-```
-
-## Loading views
-To load a view you can use
-```php
-$xml = XML::create()->loadView('view.name', $data);
-```
-
-or
-
-```php
-$xml = XML::create()->loadView('view.name')->with($data);
-```
-
-## Customizing the root tag
-To customize the root tag you can use the `setRootTag` method
-
-```php
-$xml->setRootTag("my-root-tag");
-```
-
-to disable the root tag you need to set the root tag to `false` or you can use the `disableRootTag` helper
-
-```php
-$xml->disableRootTag();
-```
-
-## Getting the generated XML
-To get the generated xml you need to call the `save` method. This will return a string with the generated XML
-
-```php
-$xml->save();
-```
 
 ### Changelog
 

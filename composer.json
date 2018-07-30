@@ -1,6 +1,6 @@
 {
     "name": "acfbentveld/xml",
-    "description": "A laravel XML reader",
+    "description": "",
     "keywords": [
         "XML", "reader", "xml","laravel"
     ],
@@ -14,7 +14,6 @@
             "role": "Lead developer"
         }
     ],
-    "version": "0.0.5",
     "require": {
         "php": "^7.1"
     },
