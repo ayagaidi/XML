@@ -11,7 +11,7 @@ Checkout the import methods
 
 
 ### Methods
-Some importend methods you need to know about.
+Some important methods you need to know about.
 * setName(`string $name`) if you want to change the tag name. Default `export`
 * setVersion(`string $version`) if you want to change the xml version. Default `1.0`
 * setIso(`string $iso`) if you want to change the xml ISO. Default `UTF-8`
