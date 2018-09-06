@@ -2,6 +2,12 @@
 
 All notable changes to `DataTables` will be documented in this file
 
+## 1.0.1
+
+- Fixed issue with single row objects
+- Added new functionality for single row xml files
+- Fixed performance bugs
+
 ## 1.0.0
 
 - Added export support
