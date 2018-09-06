@@ -68,6 +68,15 @@ Export the data as a SimpleXMLObject (optimize won't work with the function `raw
     dd($xml);
 ```
 
+#### Return expectation
+Some xml files have onbly one row. In that case you dont want an array to be returned but the object instead.
+You can set the `expectArray` method to false to return the object instead.
+```php
+    $path = storage_path().'/my-xml.xml';
+    $xml = XML::path($path)->expectArray(false)->optimize()->collect();
+    dd($xml);
+```
+
 
 ### Changelog
 
