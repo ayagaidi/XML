@@ -11,12 +11,49 @@ use File;
  */
 class XML
 {
+    
+    /**
+     * The expactation for the return type
+     * By default the return will always be numeric array
+     *
+     * @var bool
+     */
+    protected $expect = true;
 
-    protected $file_path;
-    protected $xml;
-    protected $xml_object;
-    protected $optimized;
-    public $error;
+    /**
+     * The file path
+     *
+     * @var void
+     */
+    protected $file_path = null;
+
+    /**
+     * The xml object raw
+     *
+     * @var void
+     */
+    protected $xml = null;
+
+    /**
+     * The xml object translated to std object
+     *
+     * @var void
+     */
+    protected $xml_object = null;
+
+    /**
+     * The optimizing default value
+     *
+     * @var bool
+     */
+    protected $optimized = false;
+
+    /**
+     * Error handling
+     *
+     * @var bool
+     */
+    public $error = false;
 
     /**
      * Init the text class
@@ -91,75 +128,20 @@ class XML
      * @param type $new_object
      * @return optimized object
      */
-    private function loopOptimize($obj)
+    private function loopOptimize($object)
     {
-        $data = new \stdClass();
-        if ((is_object($obj) && get_class($obj) == 'SimpleXMLElement')) {
-            if (count($obj->children())) {
-                $data = $this->loopOptimizedChildren($data, $obj);
-            }
-            if (count($obj->attributes())) {
-                $data = $this->loopOptimizedAttributes($data, $obj);
-            }
-            if (count(get_object_vars($data)) == 0) {
-                $data = $this->typeCheck($obj);
-            } elseif (strlen((string) $obj)) {
-                $data->value = $this->typeCheck($obj);
-            }
-        } elseif (is_array($obj)) {
-            $data = $this->loopOptimizedArray($data, $obj);
-        } else {
-            $data = $this->typeCheck($obj);
-        }
-        return $data;
-    }
-
-    /**
-     * If this is actually an array, treat it as such.
-     * This sort of thing is what makes simpleXML a pain to use.
-     * 
-     */
-    private function loopOptimizedChildren($data, $obj)
-    {
-        foreach ($obj as $key => $value) {
-            if (count($obj->$key) > 1) {
-                if (!isset($data->$key) || !is_array($data->$key)) {
-                    $data->{$this->keyCheck($key)} = array();
+        $array = (array) $object;
+        $data = [];
+        foreach($array as $key => $value){
+            if(is_object($value)){
+                if(strpos(get_class($value),"SimpleXML")!==false){
+                    $data[$key] = $this->loopOptimize($value, $data);
                 }
-                array_push($data->{$this->keyCheck($key)}, $this->loopOptimize($value));
-            } else {
-                $data->{$this->keyCheck($key)} = $this->loopOptimize($value);
+            }elseif(is_array($value)){
+                $data[$key] = $this->loopOptimize($value, $data);
+            }else{
+                $data[$this->keyCheck($key)] = $this->typeCheck($value);
             }
-        }
-        return $data;
-    }
-
-    /**
-     * Loop through the attributes
-     *
-     * @param type $data
-     * @param type $obj
-     * @return stdClass
-     */
-    private function loopOptimizedAttributes($data, $obj)
-    {
-        foreach ($obj->attributes() as $key => $value) {
-            $data->{$this->keyCheck($key)} = $this->typeCheck($value);
-        }
-        return $data;
-    }
-
-    /**
-     * Loop through the xml array
-     *
-     * @param type $data
-     * @param type $obj
-     * @return stdClass
-     */
-    private function loopOptimizedArray($data, $obj)
-    {
-        foreach ($obj as $key => $value) {
-            $data->$key = $this->loopOptimize($value);
         }
         return $data;
     }
@@ -213,15 +195,52 @@ class XML
      */
     public function collect()
     {
-        $object = ($this->optimized)?$this->optimized:$this->xml;
-        foreach($object as $key => $item){
-            if(is_object($object)){
-                $object->$key = collect($item);
-            }else{
-                $object[$key] = collect($item);
-            }
+        $data = ($this->optimized)?$this->optimized:$this->xml;
+        $build = $this->loopCollect($data);
+        if(is_object($build) && !isset($build->{0})){
+            $object = collect([$build]);
+        }else{
+            $object = collect($build);
+        }
+        if(!$this->expect){
+            return $object->first();
         }
         return $object;
+    }
+
+    /**
+     * Loop the data and translate to object/collection
+     *
+     * @param array $data
+     * @return object
+     */
+    private function loopCollect($data)
+    {
+        
+        $object = [] ;
+        foreach($data as $key => $value){
+            if(is_array($value) && !is_numeric($key)){
+                $object = (object) $this->loopCollect($value);
+            }elseif(is_array($value)){
+                $object[$key] = (object) $this->loopCollect($value);
+            }else{
+                $object[$key] =  $value;
+            }
+            
+        }
+        return (object)$object;
+    }
+
+    /**
+     * Set the return expectation
+     *
+     * @param bool $expect
+     * @return $this
+     */
+    public function expectArray(bool $expect)
+    {
+        $this->expect = $expect;
+        return $this;
     }
 
     /**
