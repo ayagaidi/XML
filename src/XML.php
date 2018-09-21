@@ -195,10 +195,11 @@ class XML
      */
     public function collect()
     {
-        $data = ($this->optimized)?$this->optimized:$this->xml;
+		$data = ($this->optimized)?$this->optimized:$this->xml;
         $build = $this->loopCollect($data);
         if(is_object($build) && !isset($build->{0})){
             $object = collect([$build]);
+            $this->expect = false;
         }else{
             $object = collect($build);
         }
@@ -216,19 +217,20 @@ class XML
      */
     private function loopCollect($data)
     {
-        
-        $object = [] ;
+        $object = new \stdClass;
         foreach($data as $key => $value){
-            if(is_array($value) && !is_numeric($key)){
-                $object = (object) $this->loopCollect($value);
-            }elseif(is_array($value)){
-                $object[$key] = (object) $this->loopCollect($value);
+            if(is_numeric($key) && is_array($value)){
+                $object = (is_array($object))?$object:[];
+                $object[$key] = $this->loopCollect($value);
+            }elseif(is_string($key) && is_array($value)){
+                $object->{$key} = array();
+                $object->{$key} = $this->loopCollect($value);
             }else{
-                $object[$key] =  $value;
+                $object->{$key} = $value;
             }
-            
         }
-        return (object)$object;
+
+        return $object;
     }
 
     /**
