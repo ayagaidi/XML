@@ -72,8 +72,8 @@ class XML
     /**
      * Create export and save it
      *
-     * @param type $function
-     * @return void
+     * @param callable $function
+     * @return ExportController
      */
     public static function export($function = false)
     {

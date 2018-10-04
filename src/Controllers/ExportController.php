@@ -2,28 +2,38 @@
 
 namespace ACFBentveld\XML\Controllers;
 
+use DOMDocument;
 
 /**
- * An laravel xml parser package
+ * A Laravel XML parser package
  *
+ * @package ACFBentveld\XML\Controllers
  */
 class ExportController
 {
-
+    /**
+     * @var string version of the xml
+     */
     protected $version = '1.0';
-    protected $iso = 'UTF-8';
-    protected $name   = 'export';
-    protected $type = 'xml';
-    protected $fields = [];
+    /**
+     * @var string encoding of the xml
+     */
+    protected $encoding = 'UTF-8';
+    /**
+     * @var string name of the file
+     */
+    protected $name       = 'export';
+    protected $rootTag    = 'xml';
+    protected $fields     = [];
     protected $collection = false;
     protected $view;
-    protected $data = [];
+    protected $data       = [];
 
     /**
      * Build the export controller
      *
-     * @param type $function
-     * @return $this
+     * @param callable $function
+     * @return ExportController
      */
     public function boot($function = false)
     {
@@ -35,7 +45,7 @@ class ExportController
      * Change the class name property
      *
      * @param string $name
-     * @return $this
+     * @return ExportController
      */
     public function setName(string $name)
     {
@@ -58,16 +68,47 @@ class ExportController
     /**
      * change the iso
      *
+     * @param string $encoding
+     *
+     * @return $this
+     */
+    public function setEncoding(string $encoding)
+    {
+        $this->encoding = $encoding;
+        return $this;
+    }
+
+
+    /**
+     * @deprecated
+     * change the iso
+     *
      * @param string $iso
      * @return $this
      */
     public function setIso(string $iso)
     {
-        $this->iso = $iso;
+        trigger_error('Method ' . __METHOD__ . ' is deprecated. Use "setEncoding"', E_USER_DEPRECATED);
+        $this->encoding = $iso;
         return $this;
     }
 
     /**
+     * Change the type
+     *
+     * @param string $rootTag
+     *
+     * @return $this
+     */
+    public function setRootTag(string $rootTag)
+    {
+        $this->rootTag = $rootTag;
+        return $this;
+    }
+
+
+    /**
+     * @deprecated
      * Change the type
      *
      * @param string $type
@@ -75,7 +116,8 @@ class ExportController
      */
     public function setType(string $type)
     {
-        $this->type = $type;
+        trigger_error('Method ' . __METHOD__ . ' is deprecated. Use "setRootTag"', E_USER_DEPRECATED);
+        $this->rootTag = $type;
         return $this;
     }
 
@@ -103,7 +145,7 @@ class ExportController
     public function loadView(string $view, $data)
     {
         $html = view($view)->with($data)->render();
-        $dom = new \DOMDocument();
+        $dom = new DOMDocument();
         $dom->loadHTML($html);
         $headers = $dom->getElementsByTagName('th');
         $body = $dom->getElementsByTagName('td');
@@ -173,9 +215,9 @@ class ExportController
     protected function createXMl()
     {
         /* create a dom document with encoding utf8 */
-        $domtree = new \DOMDocument($this->version, $this->iso);
+        $domtree = new \DOMDocument($this->version, $this->encoding);
         /* create the root element of the xml tree */
-        $xmlRoot = $domtree->createElement($this->type);
+        $xmlRoot = $domtree->createElement($this->rootTag);
         /* append it to the document created */
         $root = $domtree->appendChild($xmlRoot);
         foreach($this->fields as $fields){

@@ -1,51 +1,58 @@
 {
-    "name": "acfbentveld/xml",
-    "description": "",
-    "keywords": [
-        "XML", "reader", "xml","laravel"
-    ],
-    "homepage": "https://github.com/ACFBentveld/XML",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Wim Pruiksma",
-            "email": "wim@acfbentveld.nl",
-            "homepage": "https://acfbentveld.nl/",
-            "role": "Lead developer"
-        }
-    ],
-    "require": {
-        "php": "^7.1"
-    },
-    "require-dev": {
-        
-    },
-    "autoload": {
-        "psr-4": {
-            "ACFBentveld\\XML\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "ACFBentveld\\XML\\Tests\\": "tests"
-        }
-    },
-    "scripts": {
-        "test": "vendor/bin/phpunit",
-        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-
-    },
-    "config": {
-        "sort-packages": true
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "ACFBentveld\\XML\\XMLServiceProvider"
-            ],
-            "aliases": {
-                "XML": "ACFBentveld\\XML\\XMLFacade"
-            }
-        }
+  "name": "acfbentveld/xml",
+  "description": "",
+  "keywords": [
+    "XML",
+    "reader",
+    "xml",
+    "laravel"
+  ],
+  "homepage": "https://github.com/ACFBentveld/XML",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Wim Pruiksma",
+      "email": "wim@acfbentveld.nl",
+      "homepage": "https://acfbentveld.nl/",
+      "role": "Lead developer"
     }
+  ],
+  "require": {
+    "php": "^7.1",
+    "illuminate/support": "5.*",
+    "ext-dom": "*"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "ACFBentveld\\XML\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ACFBentveld\\XML\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "ACFBentveld\\XML\\XMLServiceProvider"
+      ],
+      "aliases": {
+        "XML": "ACFBentveld\\XML\\XMLFacade"
+      }
+    }
+  },
+  "suggest": {
+    "illuminate/view": "Required to use the load view feature.",
+    "laravel/laravel": "Required to use the load view feature."
+  }
 }
