@@ -56,6 +56,13 @@ class XML
     public $error = false;
 
     /**
+     * cast response keys
+     *
+     * @var array
+     */
+    public $cast = [];
+
+    /**
      * Init the text class
      *
      * @param string $path
@@ -132,6 +139,9 @@ class XML
     {
         $array = (array) $object;
         $data = [];
+        if(count($array) === 0){
+            return $this->typeCheck(null);
+        }
         foreach($array as $key => $value){
             if(is_object($value)){
                 if(strpos(get_class($value),"SimpleXML")!==false){
@@ -146,6 +156,21 @@ class XML
         return $data;
     }
 
+    /**
+     * Add cast keys
+     *
+     * @param void $key
+     * @param void $value
+     * @return $this
+     */
+    public function cast($key, $value)
+    {
+        is_null($key) && $key = 'null';
+        $key === false && $key = 'false';
+        $key === true && $key = 'true';
+        $this->cast[(string) $key] = $value;
+        return $this;
+    }
 
     /**
      * check the value type
@@ -157,10 +182,20 @@ class XML
     {
         $p = '/^[0-9]*\.[0-9]+$/';
         if(preg_match($p, $value)){
-            return (double) $value;
+            return (isset($this->cast['double']))?$this->cast['double']:(double)$value;
         }elseif(is_numeric((string)$value)){
-            return (int) $value;
+            return (isset($this->cast['numeric']))?$this->cast['numeric']:(int)$value;
+        }elseif(is_null($value)){
+            return (isset($this->cast['null']))?$this->cast['null']:null;
+        }elseif(is_bool($value)){
+            return (isset($this->cast['bool']))?$this->cast['bool']:$value;
+        }elseif($value === false){
+            return (isset($this->cast['false']))?$this->cast['false']:$value;
+        }elseif($value === true){
+            return (isset($this->cast['true']))?$this->cast['true']:$value;
         }
+
+
         return (string) $value;
     }
 
@@ -195,7 +230,7 @@ class XML
      */
     public function collect()
     {
-		$data = ($this->optimized)?$this->optimized:$this->xml;
+		$data = ($this->optimized) ? $this->optimized : $this->xml;
         $build = $this->loopCollect($data);
         if(is_object($build) && !isset($build->{0})){
             $object = collect([$build]);
@@ -210,7 +245,7 @@ class XML
     }
 
     /**
-     * Loop the data and translate to object/collection
+     * Loop the data and cast to object/collection
      *
      * @param array $data
      * @return object
