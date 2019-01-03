@@ -78,4 +78,12 @@ class XMLBuilderTest extends TestCase
 
         $this->assertMatchesXmlSnapshot($xml);
     }
+
+
+    public function test_dynamic_setter_exception()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        XML::export([])->version();
+        XML::export([])->encoding(1, 2, 3);
+    }
 }
