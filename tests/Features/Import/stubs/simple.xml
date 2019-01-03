@@ -1,0 +1,6 @@
+<note>
+    <to>Foo</to>
+    <from>Bar</from>
+    <heading>Baz</heading>
+    <body>FooBar!</body>
+</note>
