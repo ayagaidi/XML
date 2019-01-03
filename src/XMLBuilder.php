@@ -1,6 +1,6 @@
 <?php
 
-namespace ACFBentveld\XML\Controllers;
+namespace ACFBentveld\XML;
 
 use DOMDocument;
 use DOMNode;

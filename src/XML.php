@@ -3,7 +3,7 @@
 namespace ACFBentveld\XML;
 
 use ACFBentveld\XML\Controllers\ExportController;
-use ACFBentveld\XML\Controllers\XMLBuilder;
+use ACFBentveld\XML\XMLBuilder;
 use File;
 
 /**
@@ -110,7 +110,7 @@ class XML
      * @param string $viewName
      * @param array  $data
      *
-     * @return \ACFBentveld\XML\Controllers\XMLBuilder
+     * @return \ACFBentveld\XML\XMLBuilder
      */
     public static function exportView(string $viewName, $data = [])
     {
