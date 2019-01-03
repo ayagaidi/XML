@@ -2,64 +2,61 @@
 
 namespace ACFBentveld\XML;
 
-use ACFBentveld\XML\Exporters\ArrayExporter;
-use ACFBentveld\XML\Exporters\ViewExporter;
 use File;
+use ACFBentveld\XML\Exporters\ViewExporter;
+use ACFBentveld\XML\Exporters\ArrayExporter;
 
 /**
- * An laravel xml parser package
- *
+ * An laravel xml parser package.
  */
 class XML
 {
-
     /**
-     * Error handling
+     * Error handling.
      *
      * @var bool
      */
     public $error = false;
     /**
-     * cast response keys
+     * cast response keys.
      *
      * @var array
      */
     public $cast = [];
     /**
      * The expactation for the return type
-     * By default the return will always be numeric array
+     * By default the return will always be numeric array.
      *
      * @var bool
      */
     protected $expect = true;
     /**
-     * The file path
+     * The file path.
      *
      * @var void
      */
     protected $file_path = null;
     /**
-     * The xml object raw
+     * The xml object raw.
      *
      * @var void
      */
     protected $xml = null;
     /**
-     * The xml object translated to std object
+     * The xml object translated to std object.
      *
      * @var void
      */
     protected $xml_object = null;
     /**
-     * The optimizing default value
+     * The optimizing default value.
      *
      * @var bool
      */
     protected $optimized = false;
 
-
     /**
-     * Init the text class
+     * Init the text class.
      *
      * @param string $path
      *
@@ -70,13 +67,12 @@ class XML
         $class = new Xml;
         $class->file_path = $path;
         $class->readFile();
+
         return $class;
     }
 
-
     /**
-     * Read the xml file
-     *
+     * Read the xml file.
      */
     private function readFile()
     {
@@ -90,49 +86,44 @@ class XML
         }
     }
 
-
-
     public static function export($data)
     {
         return new ArrayExporter($data);
     }
-
 
     public static function exportView(string $viewName, $data = [])
     {
         return new ViewExporter($viewName, $data);
     }
 
-
     /**
      * DEPRICATED FUNCTION !!! Will be removed in next version 1.*
-     * THIS FUNCTIONALITY WILL BE MOVED TO export()
+     * THIS FUNCTIONALITY WILL BE MOVED TO export().
      *
      * @param string $encoding
      * @param string $version
      *
      * @return \ACFBentveld\XML\XMLBuilder
      */
-    public static function create(string $encoding = "UTF-8", string $version = "1.0")
+    public static function create(string $encoding = 'UTF-8', string $version = '1.0')
     {
         return new XMLBuilder($encoding, $version);
     }
 
-
     /**
-     * Optimize the xml object
+     * Optimize the xml object.
      *
      * @return $this
      */
     public function optimize()
     {
         $this->optimized = $this->loopOptimize($this->xml);
+
         return $this;
     }
 
-
     /**
-     * Optimize the opbject. Remove not allowed methods and empty objects
+     * Optimize the opbject. Remove not allowed methods and empty objects.
      *
      * @param mixed $object
      *
@@ -140,14 +131,14 @@ class XML
      */
     private function loopOptimize($object)
     {
-        $array = (array)$object;
+        $array = (array) $object;
         $data = [];
         if (count($array) === 0) {
             return $this->typeCheck(null);
         }
         foreach ($array as $key => $value) {
             if (is_object($value)) {
-                if (strpos(get_class($value), "SimpleXML") !== false) {
+                if (strpos(get_class($value), 'SimpleXML') !== false) {
                     $data[$this->keyCheck($key)] = $this->loopOptimize($value, $data);
                 }
             } elseif (is_array($value)) {
@@ -156,12 +147,12 @@ class XML
                 $data[$this->keyCheck($key)] = $this->typeCheck($value);
             }
         }
+
         return $data;
     }
 
-
     /**
-     * check the value type
+     * check the value type.
      *
      * @param string $value
      *
@@ -171,9 +162,9 @@ class XML
     {
         $p = '/^[0-9]*\.[0-9]+$/';
         if (preg_match($p, $value)) {
-            return (isset($this->cast['double'])) ? $this->cast['double'] : (double)$value;
-        } elseif (is_numeric((string)$value)) {
-            return (isset($this->cast['numeric'])) ? $this->cast['numeric'] : (int)$value;
+            return (isset($this->cast['double'])) ? $this->cast['double'] : (float) $value;
+        } elseif (is_numeric((string) $value)) {
+            return (isset($this->cast['numeric'])) ? $this->cast['numeric'] : (int) $value;
         } elseif (is_null($value)) {
             return (isset($this->cast['null'])) ? $this->cast['null'] : null;
         } elseif (is_bool($value)) {
@@ -184,13 +175,11 @@ class XML
             return (isset($this->cast['true'])) ? $this->cast['true'] : $value;
         }
 
-
-        return (string)$value;
+        return (string) $value;
     }
 
-
     /**
-     * Check if the key is valid
+     * Check if the key is valid.
      *
      * @param type $key
      *
@@ -201,12 +190,12 @@ class XML
         $dotreplace = strtolower(str_replace('.', '_', $key));
         $spacereplace = str_replace(' ', '_', $dotreplace);
         $dashreplace = str_replace('-', '_', $spacereplace);
+
         return $dashreplace;
     }
 
-
     /**
-     * Add cast keys
+     * Add cast keys.
      *
      * @param void $key
      * @param void $value
@@ -218,13 +207,13 @@ class XML
         is_null($key) && $key = 'null';
         $key === false && $key = 'false';
         $key === true && $key = 'true';
-        $this->cast[(string)$key] = $value;
+        $this->cast[(string) $key] = $value;
+
         return $this;
     }
 
-
     /**
-     * Return the raw xml object
+     * Return the raw xml object.
      *
      * @return \SimpleXMLElement object
      */
@@ -233,9 +222,8 @@ class XML
         return $this->xml_object;
     }
 
-
     /**
-     * Return the xml as a collection
+     * Return the xml as a collection.
      *
      * @return collection
      */
@@ -243,21 +231,21 @@ class XML
     {
         $data = ($this->optimized) ? $this->optimized : $this->xml;
         $build = $this->loopCollect($data);
-        if (is_object($build) && !isset($build->{0})) {
+        if (is_object($build) && ! isset($build->{0})) {
             $object = collect([$build]);
             $this->expect = false;
         } else {
             $object = collect($build);
         }
-        if (!$this->expect) {
+        if (! $this->expect) {
             return $object->first();
         }
+
         return $object;
     }
 
-
     /**
-     * Loop the data and cast to object/collection
+     * Loop the data and cast to object/collection.
      *
      * @param array $data
      *
@@ -271,7 +259,7 @@ class XML
                 $object = (is_array($object)) ? $object : [];
                 $object[$key] = $this->loopCollect($value);
             } elseif (is_string($key) && is_array($value)) {
-                $object->{$key} = array();
+                $object->{$key} = [];
                 $object->{$key} = $this->loopCollect($value);
             } else {
                 $object->{$key} = $value;
@@ -281,9 +269,8 @@ class XML
         return $object;
     }
 
-
     /**
-     * Set the return expectation
+     * Set the return expectation.
      *
      * @param bool $expect
      *
@@ -292,12 +279,12 @@ class XML
     public function expectArray(bool $expect)
     {
         $this->expect = $expect;
+
         return $this;
     }
 
-
     /**
-     * Return the complete class
+     * Return the complete class.
      *
      * @return $this
      */

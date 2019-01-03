@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ACFBentveld\XML\Exporters;
 
 interface Exporter

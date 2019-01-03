@@ -2,9 +2,9 @@
 
 namespace ACFBentveld\XML\Exporters;
 
-use ACFBentveld\XML\XMLBuilder;
-use DOMDocument;
 use DOMNode;
+use DOMDocument;
+use ACFBentveld\XML\XMLBuilder;
 
 class ArrayExporter extends XMLBuilder implements Exporter
 {
@@ -20,9 +20,8 @@ class ArrayExporter extends XMLBuilder implements Exporter
         $this->data = $data;
     }
 
-
     /**
-     * Generate xml based on a array
+     * Generate xml based on a array.
      *
      * @return string
      */
@@ -46,12 +45,12 @@ class ArrayExporter extends XMLBuilder implements Exporter
             $element = $document->createElement($field, $value);
             $root->appendChild($element);
         }
+
         return $document->saveXML();
     }
 
-
     /**
-     * Walk over a array of values and add those values to the xml
+     * Walk over a array of values and add those values to the xml.
      *
      * @param array        $values   - values to walk over
      * @param string       $name     - name of the parent element
@@ -72,12 +71,12 @@ class ArrayExporter extends XMLBuilder implements Exporter
             $element = $document->createElement($name, $value);
             $root->appendChild($element);
         }
+
         return $document;
     }
 
-
     /**
-     * Recursively create multiple xml children with the same name
+     * Recursively create multiple xml children with the same name.
      *
      * @param string       $name     - the name of the children
      * @param array        $values   - values for the children
