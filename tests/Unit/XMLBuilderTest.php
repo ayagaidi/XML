@@ -62,11 +62,11 @@ class XMLBuilderTest extends TestCase
      */
     public function test_can_disable_root()
     {
-        $xml = XML::export("")
+        $xml = XML::export([])
             ->disableRootTag()
             ->toString();
 
-        $xml = trim($xml); // remove forma
+        $xml = trim($xml); // remove format
 
         $this->assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", $xml);
     }

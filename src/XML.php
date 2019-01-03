@@ -2,8 +2,8 @@
 
 namespace ACFBentveld\XML;
 
-use ACFBentveld\XML\Controllers\ExportController;
-use ACFBentveld\XML\XMLBuilder;
+use ACFBentveld\XML\Exporters\ArrayExporter;
+use ACFBentveld\XML\Exporters\ViewExporter;
 use File;
 
 /**
@@ -91,31 +91,16 @@ class XML
     }
 
 
-    /**
-     * Export a array to xml
-     *
-     * @param array $function
-     *
-     * @return \ACFBentveld\XML\Controllers\XMLBuilder
-     */
+
     public static function export($data)
     {
-        return (new XMLBuilder())->data($data);
+        return new ArrayExporter($data);
     }
 
 
-    /**
-     * Export a view to xml
-     *
-     * @param string $viewName
-     * @param array  $data
-     *
-     * @return \ACFBentveld\XML\XMLBuilder
-     */
     public static function exportView(string $viewName, $data = [])
     {
-        $view = view($viewName)->with($data)->render();
-        return (new XMLBuilder())->data($view);
+        return new ViewExporter($viewName, $data);
     }
 
 

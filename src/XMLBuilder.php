@@ -2,8 +2,6 @@
 
 namespace ACFBentveld\XML;
 
-use DOMDocument;
-use DOMNode;
 use Illuminate\Support\Str;
 
 /**
@@ -91,160 +89,10 @@ class XMLBuilder
      *
      * @return $this
      */
-    public function data($data)
+    public function data(array $data)
     {
         $this->data = $data;
         return $this;
-    }
-
-
-    /**
-     * Get the xml as a string.
-     *
-     * @return string
-     */
-    public function toString(): string
-    {
-        if (is_string($this->data)) {
-            return $this->getProlog()
-                . $this->openRootTag()
-                . $this->data
-                . $this->closeRootTag();
-        }
-        return $this->generate();
-    }
-
-
-    /**
-     * Make the XML Prolog tag.
-     *
-     * @return string
-     */
-    private function getProlog(): string
-    {
-        return "<?xml version=\"{$this->version}\" encoding=\"{$this->encoding}\"?>" . PHP_EOL;
-    }
-
-
-    /**
-     * Make the root tag. Returns `null` if the root tag is disabled.
-     *
-     * @return null|string
-     */
-    private function openRootTag()
-    {
-        return !$this->rootTag ? null : "<{$this->rootTag}>";
-    }
-
-
-    /**
-     * Make the closing tag for the root tag. Returns `null` if the root tag is disabled.
-     *
-     * @return null|string
-     */
-    private function closeRootTag()
-    {
-        return !$this->rootTag ? null : "</{$this->rootTag}>";
-    }
-
-
-    /**
-     * Generate xml based on a array
-     *
-     * @return string
-     */
-    private function generate(): string
-    {
-        $document = new DOMDocument($this->version, $this->encoding);
-        $xmlRoot = $document->createElement($this->rootTag);
-        $root = $document->appendChild($xmlRoot);
-        foreach ($this->data as $field => $value) {
-            if (is_array($value)) {
-                $document = $this->walkArray($value, $field, $document, $root);
-                continue;
-            }
-
-            $field = $this->getFieldName($field);
-            $element = $document->createElement($field, $value);
-            $root->appendChild($element);
-        }
-        return $document->saveXML();
-    }
-
-
-    /**
-     * Walk over a array of values and add those values to the xml
-     *
-     * @param array        $values   - values to walk over
-     * @param string       $name     - name of the parent element
-     * @param \DOMDocument $document - the xml document
-     * @param \DOMNode     $root     - the root element of the xml document
-     *
-     * @return \DOMDocument
-     */
-    private function walkArray(array $values, string $name, DOMDocument &$document, DOMNode $root): DOMDocument
-    {
-        foreach ($values as $value) {
-            if (is_array($value)) {
-                $element = $document->createElement($name);
-                $parent = $root->appendChild($element);
-                $this->createMultiple($name, $value, $document, $parent);
-                continue;
-            }
-            $element = $document->createElement($name, $value);
-            $root->appendChild($element);
-        }
-        return $document;
-    }
-
-
-    /**
-     * Recursively create multiple xml children with the same name
-     *
-     * @param string       $name     - the name of the children
-     * @param array        $values   - values for the children
-     * @param \DOMDocument $document - the xml document
-     * @param \DOMNode     $parent   - the parent element the children belong to
-     */
-    private function createMultiple(string $name, array $values, DOMDocument &$document, DOMNode &$parent)
-    {
-        foreach ($values as $field => $value) {
-            if (is_array($value)) {
-                $child = $parent;
-                if (is_string($field)) {
-                    $element = $document->createElement($field);
-                    $child = $parent->appendChild($element);
-                }
-
-                $this->createMultiple($name, $value, $document, $child);
-                continue;
-            }
-            $element = $document->createElement($field, $value);
-            $parent->appendChild($element);
-        }
-    }
-
-
-    /**
-     * Generates the name for top-level tags.
-     *
-     * Primarily used for simple arrays that just contain values without keys.
-     * If $field is a string we just return that.
-     *
-     * If $field is the index of generator loop we check if the root tag is the default "root",
-     * in that case the name of the tag will be "item". If the root tag is a custom name we
-     * get the singular form of the root name
-     *
-     * @param string|int $field - name or index the check
-     *
-     * @return string - the generated name
-     */
-    private function getFieldName($field): string
-    {
-        if (!is_string($field)) {
-            return $this->rootTag === "root" || $this->forceItemName ? $this->itemName : Str::singular($this->rootTag);
-        }
-        return $field;
     }
 
 
@@ -280,5 +128,61 @@ class XMLBuilder
     {
         $this->forceItemName = true;
         return $this;
+    }
+
+
+    /**
+     * Make the XML Prolog tag.
+     *
+     * @return string
+     */
+    protected function getProlog(): string
+    {
+        return "<?xml version=\"{$this->version}\" encoding=\"{$this->encoding}\"?>" . PHP_EOL;
+    }
+
+
+    /**
+     * Make the root tag. Returns `null` if the root tag is disabled.
+     *
+     * @return null|string
+     */
+    protected function openRootTag()
+    {
+        return !$this->rootTag ? null : "<{$this->rootTag}>";
+    }
+
+
+    /**
+     * Make the closing tag for the root tag. Returns `null` if the root tag is disabled.
+     *
+     * @return null|string
+     */
+    protected function closeRootTag()
+    {
+        return !$this->rootTag ? null : "</{$this->rootTag}>";
+    }
+
+
+    /**
+     * Generates the name for top-level tags.
+     *
+     * Primarily used for simple arrays that just contain values without keys.
+     * If $field is a string we just return that.
+     *
+     * If $field is the index of generator loop we check if the root tag is the default "root",
+     * in that case the name of the tag will be "item". If the root tag is a custom name we
+     * get the singular form of the root name
+     *
+     * @param string|int $field - name or index the check
+     *
+     * @return string - the generated name
+     */
+    protected function getFieldName($field): string
+    {
+        if (!is_string($field)) {
+            return $this->rootTag === self::DEFAULT_ROOT || $this->forceItemName ? $this->itemName : Str::singular($this->rootTag);
+        }
+        return $field;
     }
 }
