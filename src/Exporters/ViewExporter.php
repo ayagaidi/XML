@@ -19,7 +19,6 @@ class ViewExporter extends XMLBuilder implements Exporter
         $this->data = view($viewName)->with($data)->render();
     }
 
-
     /**
      * Get the xml as a string.
      *
@@ -28,9 +27,8 @@ class ViewExporter extends XMLBuilder implements Exporter
     public function toString(): string
     {
         return $this->getProlog()
-            . $this->openRootTag()
-            . $this->data
-            . $this->closeRootTag();
+            .$this->openRootTag()
+            .$this->data
+            .$this->closeRootTag();
     }
-
 }

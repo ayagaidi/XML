@@ -5,9 +5,7 @@ namespace ACFBentveld\XML\Controllers;
 use DOMDocument;
 
 /**
- * A Laravel XML parser package
- *
- * @package ACFBentveld\XML\Controllers
+ * A Laravel XML parser package.
  */
 class ExportController
 {
@@ -22,15 +20,15 @@ class ExportController
     /**
      * @var string name of the file
      */
-    protected $name       = 'export';
-    protected $rootTag    = 'xml';
-    protected $fields     = [];
+    protected $name = 'export';
+    protected $rootTag = 'xml';
+    protected $fields = [];
     protected $collection = false;
     protected $view;
-    protected $data       = [];
+    protected $data = [];
 
     /**
-     * Build the export controller
+     * Build the export controller.
      *
      * @param callable $function
      * @return ExportController
@@ -38,11 +36,12 @@ class ExportController
     public function boot($function = false)
     {
         $this->fields = ($function) ? $function() : [];
+
         return $this;
     }
 
     /**
-     * Change the class name property
+     * Change the class name property.
      *
      * @param string $name
      * @return ExportController
@@ -50,11 +49,12 @@ class ExportController
     public function setName(string $name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
-     * Change the version
+     * Change the version.
      *
      * @param string $verson
      * @return $this
@@ -62,11 +62,12 @@ class ExportController
     public function setVersion(string $verson)
     {
         $this->version = $verson;
+
         return $this;
     }
 
     /**
-     * change the iso
+     * change the iso.
      *
      * @param string $encoding
      *
@@ -75,9 +76,9 @@ class ExportController
     public function setEncoding(string $encoding)
     {
         $this->encoding = $encoding;
+
         return $this;
     }
-
 
     /**
      * @deprecated
@@ -88,13 +89,14 @@ class ExportController
      */
     public function setIso(string $iso)
     {
-        trigger_error('Method ' . __METHOD__ . ' is deprecated. Use "setEncoding"', E_USER_DEPRECATED);
+        trigger_error('Method '.__METHOD__.' is deprecated. Use "setEncoding"', E_USER_DEPRECATED);
         $this->encoding = $iso;
+
         return $this;
     }
 
     /**
-     * Change the type
+     * Change the type.
      *
      * @param string $rootTag
      *
@@ -103,9 +105,9 @@ class ExportController
     public function setRootTag(string $rootTag)
     {
         $this->rootTag = $rootTag;
+
         return $this;
     }
-
 
     /**
      * @deprecated
@@ -116,13 +118,14 @@ class ExportController
      */
     public function setType(string $type)
     {
-        trigger_error('Method ' . __METHOD__ . ' is deprecated. Use "setRootTag"', E_USER_DEPRECATED);
+        trigger_error('Method '.__METHOD__.' is deprecated. Use "setRootTag"', E_USER_DEPRECATED);
         $this->rootTag = $type;
+
         return $this;
     }
 
     /**
-     * Load collection
+     * Load collection.
      *
      * @param \Illuminate\Database\Eloquent\Collection $collection
      * @return $this
@@ -132,11 +135,12 @@ class ExportController
         $this->collection = true;
         $this->name = ($this->name === 'export') ? class_basename($collection) : $this->name;
         $this->fields = $collection;
+
         return $this;
     }
 
     /**
-     * Load view and translate it to array
+     * Load view and translate it to array.
      *
      * @param string $view
      * @param type $data
@@ -150,60 +154,64 @@ class ExportController
         $headers = $dom->getElementsByTagName('th');
         $body = $dom->getElementsByTagName('td');
         $heads = [];
-        foreach($headers as $header){
+        foreach ($headers as $header) {
             $heads[] = $header->textContent;
         }
-        $i = -1;$b = 0;
-        foreach($body as $key => $value){$i++;
-            if($i === $headers->length){
-                $i = 0;$b++;
+        $i = -1;
+        $b = 0;
+        foreach ($body as $key => $value) {
+            $i++;
+            if ($i === $headers->length) {
+                $i = 0;
+                $b++;
             }
             $this->fields[$b][$heads[$i]] = $value->textContent;
         }
+
         return $this;
     }
 
-    
-
     /**
-     * Create xml file and save it as the class name property
+     * Create xml file and save it as the class name property.
      *
      * @param string $path
-     * @return boolean
+     * @return bool
      */
     public function export(string $path)
     {
-        if($this->view){
-           $this->translateView();
+        if ($this->view) {
+            $this->translateView();
         }
-        if(!str_contains($path, '.xml')){
+        if (! str_contains($path, '.xml')) {
             $path .= '/'.strtolower(str_slug($this->name)).'.xml';
         }
         $this->xml = $this->createXMl();
         $this->xml->save($path);
+
         return true;
     }
 
     /**
-     * Create xml document and rename the file to the given parameter
+     * Create xml document and rename the file to the given parameter.
      *
      * @param string $path
      * @param string $name
-     * @return boolean
+     * @return bool
      */
     public function exportAs(string $path, string $name)
     {
-        if($this->view){
-           $this->translateView();
+        if ($this->view) {
+            $this->translateView();
         }
-        if(!str_contains($name, ['xml', 'xmls'])){
+        if (! str_contains($name, ['xml', 'xmls'])) {
             $name .= str_slug($name.'.xml');
         }
-        if(!str_contains($path, '.xml')){
+        if (! str_contains($path, '.xml')) {
             $path .= '/'.strtolower($name);
         }
         $this->xml = $this->createXMl();
         $this->xml->save($path);
+
         return true;
     }
 
@@ -220,25 +228,26 @@ class ExportController
         $xmlRoot = $domtree->createElement($this->rootTag);
         /* append it to the document created */
         $root = $domtree->appendChild($xmlRoot);
-        foreach($this->fields as $fields){
+        foreach ($this->fields as $fields) {
             $this->name = ($this->collection && $this->name === class_basename($this->fields)) ? class_basename($fields) : $this->name;
             $currentRow = $domtree->createElement(strtolower(str_slug($this->name)));
             $row = $root->appendChild($currentRow);
             $fields = ($this->collection) ? $fields->toArray() : $fields;
-            foreach($fields as $key => $value){
-                if(str_contains($key, [':'])){
+            foreach ($fields as $key => $value) {
+                if (str_contains($key, [':'])) {
                     $node = $this->createAttributeNode($domtree, $key, $value);
-                }else{
+                } else {
                     $node = $domtree->createElement(str_slug($key), $value);
                 }
                 $row->appendChild($node);
             }
         }
+
         return $domtree;
     }
 
     /**
-     * Create element with attribute
+     * Create element with attribute.
      *
      * @param \DOMDocument $domtree
      * @param void $key
@@ -252,6 +261,7 @@ class ExportController
             $node = $domtree->createElement($explode[0]);
             $node->setAttribute($explode[1], $value);
         }
+
         return $node;
     }
 }

@@ -2,13 +2,13 @@
 
 namespace ACFBentveld\XML\Tests\Unit;
 
-use ACFBentveld\XML\Tests\TestCase;
 use ACFBentveld\XML\XML;
+use ACFBentveld\XML\Tests\TestCase;
 
 class XMLBuilderTest extends TestCase
 {
     /**
-     * Test can set the xml version
+     * Test can set the xml version.
      */
     public function test_can_set_version()
     {
@@ -20,7 +20,7 @@ class XMLBuilderTest extends TestCase
     }
 
     /**
-     * Test can set the xml encoding
+     * Test can set the xml encoding.
      */
     public function test_can_set_encoding()
     {
@@ -32,7 +32,7 @@ class XMLBuilderTest extends TestCase
     }
 
     /**
-     * Test can set the root tag using the setter
+     * Test can set the root tag using the setter.
      */
     public function test_can_set_root_using_setter()
     {
@@ -43,9 +43,8 @@ class XMLBuilderTest extends TestCase
         $this->assertMatchesXmlSnapshot($xml);
     }
 
-
     /**
-     * Test can set the root tag using the dynamic setter
+     * Test can set the root tag using the dynamic setter.
      */
     public function test_can_set_root_using_dynamic()
     {
@@ -56,9 +55,8 @@ class XMLBuilderTest extends TestCase
         $this->assertMatchesXmlSnapshot($xml);
     }
 
-
     /**
-     * Test can disable the root tag
+     * Test can disable the root tag.
      */
     public function test_can_disable_root()
     {
@@ -68,54 +66,50 @@ class XMLBuilderTest extends TestCase
 
         $xml = trim($xml); // remove format
 
-        $this->assertEquals("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", $xml);
+        $this->assertEquals('<?xml version="1.0" encoding="UTF-8"?>', $xml);
     }
 
-
     /**
-     * Test can set custom item name
+     * Test can set custom item name.
      */
     public function test_can_set_item_name()
     {
-        $xml = XML::export([ "foo", "bar", "baz" ])
-            ->itemName("name")
+        $xml = XML::export(['foo', 'bar', 'baz'])
+            ->itemName('name')
             ->toString();
 
         $this->assertMatchesXmlSnapshot($xml);
     }
 
-
     /**
-     * Test custom item name generation
+     * Test custom item name generation.
      */
     public function test_generates_item_name()
     {
-        $xml = XML::export([ "foo", "bar", "baz" ])
-            ->rootTag("names")
-            ->itemName("entry")
+        $xml = XML::export(['foo', 'bar', 'baz'])
+            ->rootTag('names')
+            ->itemName('entry')
             ->toString();
 
         $this->assertMatchesXmlSnapshot($xml);
     }
 
-
     /**
-     * Test force item name
+     * Test force item name.
      */
     public function test_can_disable_item_name_generation()
     {
-        $xml = XML::export([ "foo", "bar", "baz" ])
-            ->rootTag("names")
-            ->itemName("entry")
+        $xml = XML::export(['foo', 'bar', 'baz'])
+            ->rootTag('names')
+            ->itemName('entry')
             ->forceItemName()
             ->toString();
 
         $this->assertMatchesXmlSnapshot($xml);
     }
 
-
     /**
-     * Test that wrong called dynamic setters give a exception
+     * Test that wrong called dynamic setters give a exception.
      */
     public function test_dynamic_setter_exception()
     {

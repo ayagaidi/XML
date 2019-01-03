@@ -5,7 +5,7 @@ namespace ACFBentveld\XML;
 use Illuminate\Support\Str;
 
 /**
- * Class XMLBuilder `version`, `rootTag`, `itemName` and `encoding`
+ * Class XMLBuilder `version`, `rootTag`, `itemName` and `encoding`.
  *
  * @method XMLBuilder version(string $version = "1.0") set the xml version
  * @method XMLBuilder encoding(string $encoding = "UTF-8") set the xml encoding
@@ -17,23 +17,23 @@ class XMLBuilder
     /**
      * The default root name.
      */
-    protected const DEFAULT_ROOT = "root";
+    protected const DEFAULT_ROOT = 'root';
     /**
      * @var string the encoding of the xml document.
      */
-    protected $encoding = "UTF-8";
+    protected $encoding = 'UTF-8';
     /**
      * @var string the version of the xml document.
      */
-    protected $version = "1.0";
+    protected $version = '1.0';
     /**
-     * @var string|boolean the name of the root tag. Set to false to disable the root tag.
+     * @var string|bool the name of the root tag. Set to false to disable the root tag.
      */
     protected $rootTag = self::DEFAULT_ROOT;
     /**
-     * @var string|boolean the default name of xml items that where not defined with a key.
+     * @var string|bool the default name of xml items that where not defined with a key.
      */
-    protected $itemName = "item";
+    protected $itemName = 'item';
     /**
      * @var array|string data for the xml
      */
@@ -43,19 +43,17 @@ class XMLBuilder
      */
     protected $forceItemName = false;
 
-
     /**
      * XMLBuilder constructor.
      *
      * @param string $encoding the encoding to use for the xml document. Defaults to "UTF-8".
      * @param string $version  the version to use for the xml document. Defaults to "1.0".
      */
-    public function __construct(string $encoding = "UTF-8", string $version = "1.0")
+    public function __construct(string $encoding = 'UTF-8', string $version = '1.0')
     {
         $this->encoding = $encoding;
         $this->version = $version;
     }
-
 
     /**
      * Disable the root tag.
@@ -67,23 +65,22 @@ class XMLBuilder
         return $this->setRootTag(false);
     }
 
-
     /**
      * Set the root tag for the document.
      *
-     * @param string|boolean $tag the name to use as the root tag. Set to `false` to disable.
+     * @param string|bool $tag the name to use as the root tag. Set to `false` to disable.
      *
      * @return $this
      */
     public function setRootTag($tag): XMLBuilder
     {
         $this->rootTag = $tag;
+
         return $this;
     }
 
-
     /**
-     * Set the data
+     * Set the data.
      *
      * @param $data
      *
@@ -92,12 +89,12 @@ class XMLBuilder
     public function data(array $data)
     {
         $this->data = $data;
+
         return $this;
     }
 
-
     /**
-     * Handle dynamic setters for `version`, `rootTag`, `itemName` and `encoding`
+     * Handle dynamic setters for `version`, `rootTag`, `itemName` and `encoding`.
      *
      * @param $name
      * @param $arguments
@@ -111,14 +108,15 @@ class XMLBuilder
                 throw new \InvalidArgumentException("$name requires 1 parameter");
             }
             $this->{$name} = $arguments[0];
+
             return $this;
         }
+
         return $this;
     }
 
-
     /**
-     * Force item name usage
+     * Force item name usage.
      *
      * @param bool $forceItemName
      *
@@ -127,9 +125,9 @@ class XMLBuilder
     public function forceItemName(): XMLBuilder
     {
         $this->forceItemName = true;
+
         return $this;
     }
-
 
     /**
      * Make the XML Prolog tag.
@@ -138,9 +136,8 @@ class XMLBuilder
      */
     protected function getProlog(): string
     {
-        return "<?xml version=\"{$this->version}\" encoding=\"{$this->encoding}\"?>" . PHP_EOL;
+        return "<?xml version=\"{$this->version}\" encoding=\"{$this->encoding}\"?>".PHP_EOL;
     }
-
 
     /**
      * Make the root tag. Returns `null` if the root tag is disabled.
@@ -149,9 +146,8 @@ class XMLBuilder
      */
     protected function openRootTag()
     {
-        return !$this->rootTag ? null : "<{$this->rootTag}>";
+        return ! $this->rootTag ? null : "<{$this->rootTag}>";
     }
-
 
     /**
      * Make the closing tag for the root tag. Returns `null` if the root tag is disabled.
@@ -160,9 +156,8 @@ class XMLBuilder
      */
     protected function closeRootTag()
     {
-        return !$this->rootTag ? null : "</{$this->rootTag}>";
+        return ! $this->rootTag ? null : "</{$this->rootTag}>";
     }
-
 
     /**
      * Generates the name for top-level tags.
@@ -180,9 +175,10 @@ class XMLBuilder
      */
     protected function getFieldName($field): string
     {
-        if (!is_string($field)) {
+        if (! is_string($field)) {
             return $this->rootTag === self::DEFAULT_ROOT || $this->forceItemName ? $this->itemName : Str::singular($this->rootTag);
         }
+
         return $field;
     }
 }

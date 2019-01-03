@@ -3,10 +3,10 @@
 namespace ACFBentveld\XML\Tests;
 
 use ACFBentveld\XML\XMLFacade;
-use ACFBentveld\XML\XMLServiceProvider;
-use Orchestra\Testbench\TestCase as Orchestra;
-use Illuminate\Support\Facades\Artisan;
 use Spatie\Snapshots\MatchesSnapshots;
+use ACFBentveld\XML\XMLServiceProvider;
+use Illuminate\Support\Facades\Artisan;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 abstract class TestCase extends Orchestra
 {
@@ -18,13 +18,13 @@ abstract class TestCase extends Orchestra
         Artisan::call('view:clear');
     }
 
-
     protected function getPackageProviders($app)
     {
         return [
             XMLServiceProvider::class,
         ];
     }
+
     protected function getPackageAliases($app)
     {
         return [
