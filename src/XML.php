@@ -105,6 +105,21 @@ class XML
 
 
     /**
+     * Export a view to xml
+     *
+     * @param string $viewName
+     * @param array  $data
+     *
+     * @return \ACFBentveld\XML\Controllers\XMLBuilder
+     */
+    public static function exportView(string $viewName, $data = [])
+    {
+        $view = view($viewName)->with($data)->render();
+        return (new XMLBuilder())->data($view);
+    }
+
+
+    /**
      * DEPRICATED FUNCTION !!! Will be removed in next version 1.*
      * THIS FUNCTIONALITY WILL BE MOVED TO export()
      *
