@@ -241,10 +241,8 @@ class XMLBuilder
      */
     private function getFieldName($field): string
     {
-        if ($this->forceItemName) {
-            return $this->itemName;
-        } else if (!is_string($field)) {
-            return $this->rootTag === "root" ? $this->itemName : Str::singular($this->rootTag);
+        if (!is_string($field)) {
+            return $this->rootTag === "root" || $this->forceItemName ? $this->itemName : Str::singular($this->rootTag);
         }
         return $field;
     }
