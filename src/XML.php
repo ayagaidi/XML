@@ -92,18 +92,15 @@ class XML
 
 
     /**
-     * Create export and save it
+     * Export a array to xml
      *
-     * @param type $function
+     * @param array $function
      *
-     * @return void
-     * @param callable $function
-     * @return ExportController
+     * @return \ACFBentveld\XML\Controllers\XMLBuilder
      */
-    public static function export($function = false)
+    public static function export($data)
     {
-        $class = new ExportController;
-        return $class->boot($function);
+        return (new XMLBuilder())->data($data);
     }
 
 
