@@ -27,12 +27,14 @@ To read an xml file, it must be stored on the server. Call the file using the fu
 use the `path()` function to read the xml file. 
 ```php
     $path = storage_path().'/my-xml.xml';
-    $xml = XML::path($path);
+    $xml = XML::path($path)->optimize()->collect(); //returend an optimized collection
+    $xml = XML::path($path)->object(); //returns an stdClass
+    $xml = XML::path($path)->optimize()->raw(); //returns the xml file
 ``` 
 
 
 ### Optimize
-Sometimes the exported xml has broken keys or you just don't like the idea that empty values are translated as objects in simpleXMl. Use the `optimze()` function to optimize the data for PHP. It repairs the keys and sets empty values as `NULL`.
+Sometimes the exported xml has broken keys or you just don't like the idea that empty values are translated as objects in simpleXMl. Use the `optimize()` function to optimize the data for PHP. It repairs the keys and sets empty values as `NULL`.
 ```php
     $path = storage_path().'/my-xml.xml';
     $xml = XML::path($path)->optimize();
@@ -52,7 +54,7 @@ Export the data as an object (optimize is optional but recomended)
     dd($xml);
 ```
 
-#### collection
+#### collection (recomended)
 Export the data as a collection (optimize is optional but recomended)
 ```php
     $path = storage_path().'/my-xml.xml';
@@ -66,6 +68,23 @@ Export the data as a SimpleXMLObject (optimize won't work with the function `raw
     $path = storage_path().'/my-xml.xml';
     $xml = XML::path($path)->raw();
     dd($xml);
+```
+
+#### cast
+Some database columns don't accept `null` values, but if your xml contains values that are nullable, you got yourself a problem. For that situation there is the `cast` method. It replaces values in your data.
+```php
+    $path = storage_path().'/my-xml.xml';
+    $xml = XML::path($path)->cast(null, ''); //casts every null value to an empty string
+    dd($xml);
+```
+But there is more. It allows also `double`, `numeric`, `null`, `bool`, `false`, `true`
+```php
+    $xml = XML::path($path)->cast(null, ''); //casts every null value to an empty string
+    $xml = XML::path($path)->cast(false, ''); //casts every false value to an empty string
+    $xml = XML::path($path)->cast(true, ''); //casts every true value to an empty string
+    $xml = XML::path($path)->cast('numeric', ''); //casts every numeric value to an empty string
+    $xml = XML::path($path)->cast(null, ''); //casts every null value to an empty string
+    $xml = XML::path($path)->cast('double', ''); //casts every double value to an empty string
 ```
 
 #### Return expectation

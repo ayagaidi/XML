@@ -18,7 +18,7 @@ Some important methods you need to know about.
 * setType(`string $type`) if you want to change the XML type. Default `xml`
 
 ```php
-    $preview = XML::export()->setName('export')->setVersion('1.0')->setIso('UTF-8')->setType('xml');
+    $preview = XML::export()->setName('export')->setVersion('1.0')->setIso('UTF-8')->setType('xml')->export();
 ```
 
 ### Simple export
@@ -41,7 +41,7 @@ Just a simple sample for exporting data to XML. Also in this sample we will use 
         return $data; //or do domething funny here. We will just return it here.
     })
     ->setName('Red Wedding') // this is the elements name
-    ->save(storage_path('app/media')); //or use saveAs to set a name
+    ->export(storage_path('app/media')); //or use saveAs to set a name
     
 ```
 Above will create an XML document that looks like this : 
@@ -66,7 +66,7 @@ Trust me i know something.
 
 ```php
     $collection = User::all();
-    XML::export()->loadCollection($collection)->save('red_wedding_guys.xml'); //yes you can pass the name to this method alaso
+    XML::export()->loadCollection($collection)->export('red_wedding_guys.xml'); //yes you can pass the name to this method also
 ```
 Thats it. The export method will create a nice and neat xml file.
 
