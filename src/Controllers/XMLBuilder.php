@@ -40,6 +40,10 @@ class XMLBuilder
      * @var array|string data for the xml
      */
     protected $data = [];
+    /**
+     * @var bool force usage of the item name instead a name generated based on the root tag
+     */
+    protected $forceItemName = false;
 
 
     /**
@@ -60,7 +64,7 @@ class XMLBuilder
      *
      * @return $this
      */
-    public function disableRootTag()
+    public function disableRootTag(): XMLBuilder
     {
         return $this->setRootTag(false);
     }
@@ -73,7 +77,7 @@ class XMLBuilder
      *
      * @return $this
      */
-    public function setRootTag($tag)
+    public function setRootTag($tag): XMLBuilder
     {
         $this->rootTag = $tag;
         return $this;
@@ -99,7 +103,7 @@ class XMLBuilder
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         if (is_string($this->data)) {
             return $this->getProlog()
@@ -116,7 +120,7 @@ class XMLBuilder
      *
      * @return string
      */
-    private function getProlog()
+    private function getProlog(): string
     {
         return "<?xml version=\"{$this->version}\" encoding=\"{$this->encoding}\"?>" . PHP_EOL;
     }
@@ -149,7 +153,7 @@ class XMLBuilder
      *
      * @return string
      */
-    private function generate()
+    private function generate(): string
     {
         $document = new DOMDocument($this->version, $this->encoding);
         $xmlRoot = $document->createElement($this->rootTag);
@@ -178,7 +182,7 @@ class XMLBuilder
      *
      * @return \DOMDocument
      */
-    private function walkArray(array $values, string $name, DOMDocument &$document, DOMNode $root)
+    private function walkArray(array $values, string $name, DOMDocument &$document, DOMNode $root): DOMDocument
     {
         foreach ($values as $value) {
             if (is_array($value)) {
@@ -235,9 +239,11 @@ class XMLBuilder
      *
      * @return string - the generated name
      */
-    private function getFieldName($field)
+    private function getFieldName($field): string
     {
-        if (!is_string($field)) {
+        if ($this->forceItemName) {
+            return $this->itemName;
+        } else if (!is_string($field)) {
             return $this->rootTag === "root" ? $this->itemName : Str::singular($this->rootTag);
         }
         return $field;
@@ -252,7 +258,7 @@ class XMLBuilder
      *
      * @return $this
      */
-    public function __call($name, $arguments)
+    public function __call($name, $arguments): XMLBuilder
     {
         if (in_array($name, ['version', 'rootTag', 'encoding', 'itemName'])) {
             if (count($arguments) !== 1) {
@@ -261,6 +267,20 @@ class XMLBuilder
             $this->{$name} = $arguments[0];
             return $this;
         }
+        return $this;
+    }
+
+
+    /**
+     * Force item name usage
+     *
+     * @param bool $forceItemName
+     *
+     * @return XMLBuilder
+     */
+    public function forceItemName(): XMLBuilder
+    {
+        $this->forceItemName = true;
         return $this;
     }
 }
