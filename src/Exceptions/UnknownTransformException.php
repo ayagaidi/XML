@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ACFBentveld\XML\Exceptions;
 
 use Exception;

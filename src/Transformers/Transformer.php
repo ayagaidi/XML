@@ -1,15 +1,14 @@
 <?php
 
-
 namespace ACFBentveld\XML\Transformers;
 
 /**
- * Transformers allow data to be transformed before being send to the user
+ * Transformers allow data to be transformed before being send to the user.
  */
 interface Transformer
 {
     /**
-     * Apply is invoked before the final output is send to the user
+     * Apply is invoked before the final output is send to the user.
      *
      * @param mixed $data - the xml data
      *

@@ -1,22 +1,19 @@
 <?php
 
-
 namespace ACFBentveld\XML\Transformers;
-
 
 use ACFBentveld\XML\Exceptions\UnknownTransformException;
 
 class PendingTransform
 {
     protected $transformAliases = [
-        'array' => ArrayTransformer::class
+        'array' => ArrayTransformer::class,
     ];
-    private   $context;
+    private $context;
     /**
      * @var \Closure
      */
     private $resolve;
-
 
     /**
      * Create a new PendingTransform.
@@ -30,9 +27,8 @@ class PendingTransform
         $this->resolve = $resolve;
     }
 
-
     /**
-     * Transform using a alias
+     * Transform using a alias.
      *
      * @param $as
      *
@@ -40,15 +36,15 @@ class PendingTransform
      */
     public function as($alias)
     {
-        if (!array_key_exists($alias, $this->transformAliases)) {
+        if (! array_key_exists($alias, $this->transformAliases)) {
             throw UnknownTransformException::unknownAlias($alias);
         }
+
         return $this->with($this->transformAliases[$alias]);
     }
 
-
     /**
-     * Transform and resolve using a transformer
+     * Transform and resolve using a transformer.
      *
      * @param $transformer
      *
@@ -57,6 +53,7 @@ class PendingTransform
     public function with($transformer)
     {
         $resolve = $this->resolve;
+
         return $resolve($transformer);
     }
 }

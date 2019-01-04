@@ -5,7 +5,7 @@ namespace ACFBentveld\XML\Transformers;
 class ArrayTransformer implements Transformer
 {
     /**
-     * Wrap the data in a array
+     * Wrap the data in a array.
      *
      * @param mixed $data
      *

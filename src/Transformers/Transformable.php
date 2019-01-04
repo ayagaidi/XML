@@ -9,9 +9,8 @@ trait Transformable
      */
     protected $transformers = [];
 
-
     /**
-     * Add a transformer to the output
+     * Add a transformer to the output.
      *
      * @param \ACFBentveld\XML\Transformers\Transformer|string $transformer
      *
@@ -20,12 +19,12 @@ trait Transformable
     public function addTransformer($transformer)
     {
         $this->transformers[] = $transformer;
+
         return $this;
     }
 
-
     /**
-     * Apply the registered transformers on the input
+     * Apply the registered transformers on the input.
      *
      * @param mixed $on - input to apply the transformers on
      *
@@ -36,12 +35,12 @@ trait Transformable
         foreach ($this->getTransformers() as $transformer) {
             $on = $transformer::apply($on);
         }
+
         return $on;
     }
 
-
     /**
-     * Get the transformers
+     * Get the transformers.
      *
      * @return \ACFBentveld\XML\Transformers\Transformer[]
      */
