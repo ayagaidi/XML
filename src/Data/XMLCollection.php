@@ -2,16 +2,18 @@
 
 namespace ACFBentveld\XML\Data;
 
-use Countable;
+use ACFBentveld\XML\Casts\Cast;
+use ACFBentveld\XML\Casts\PendingCast;
+use ACFBentveld\XML\Transformers\PendingTransform;
+use ACFBentveld\XML\Transformers\Transformable;
 use ArrayAccess;
 use ArrayIterator;
-use JsonSerializable;
-use IteratorAggregate;
-use Illuminate\Support\Collection;
-use Illuminate\Contracts\Support\Jsonable;
+use Countable;
 use Illuminate\Contracts\Support\Arrayable;
-use ACFBentveld\XML\Transformers\Transformable;
-use ACFBentveld\XML\Transformers\PendingTransform;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Collection;
+use IteratorAggregate;
+use JsonSerializable;
 
 class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {
@@ -103,6 +105,23 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     public function expect($key)
     {
         return $this->transform($key);
+    }
+
+
+    /**
+     * Start a cast for the given key.
+     *
+     * @param $key
+     *
+     * @return \ACFBentveld\XML\Casts\PendingCast
+     */
+    public function cast($key)
+    {
+        return new PendingCast($this, function ($cast) use ($key) {
+            $this->items[$key] = Cast::to((array)$this->items[$key], $cast);
+
+            return $this;
+        });
     }
 
     /**
