@@ -7,7 +7,6 @@ namespace ACFBentveld\XML;
 use ACFBentveld\XML\Data\XMLCollection;
 use ACFBentveld\XML\Data\XMLElement;
 use Exception;
-use Illuminate\Support\Facades\File;
 use SimpleXMLElement;
 
 class XMLImporter
@@ -21,7 +20,7 @@ class XMLImporter
      */
     protected $path;
     /**
-     * @var SimpleXMLElement|mixed the processed xml ready to be used
+     * @var XMLCollection the processed xml ready to be used
      */
     protected $output;
 
@@ -47,7 +46,8 @@ class XMLImporter
      */
     private function load()
     {
-        if (File::exists($this->path)) {
+        //if (File::exists($this->path)) {
+        if (true) {
             try {
                 $this->xml = new XMLElement($this->path, null, true);
                 $this->output = new XMLCollection($this->xml);
@@ -61,10 +61,11 @@ class XMLImporter
     /**
      * Get the loaded xml
      *
-     * @return mixed|XMLElement
+     * @return XMLCollection
      */
     public function get()
     {
         return $this->output;
     }
+
 }

@@ -97,9 +97,10 @@ class XML
     }
 
 
+
     public static function import(string $path)
     {
-        return new XMLImporter($path);
+        return (new XMLImporter($path))->get();
     }
 
     /**

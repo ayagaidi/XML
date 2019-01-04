@@ -21,7 +21,8 @@
     "php": "^7.1",
     "illuminate/support": "5.*",
     "ext-dom": "*",
-    "ext-simplexml": "*"
+    "ext-simplexml": "*",
+    "ext-json": "*"
   },
   "require-dev": {
     "orchestra/testbench": "~3.5.0|~3.6.0|~3.7.0",
