@@ -2,8 +2,8 @@
 
 namespace ACFBentveld\XML\Tests\Features\Import;
 
-use ACFBentveld\XML\XML;
 use ACFBentveld\XML\Tests\TestCase;
+use ACFBentveld\XML\XML;
 
 /**
  * This test is based on version 1.* of the package. This will change in v2.
@@ -30,7 +30,7 @@ class SimpleImportTest extends TestCase
     public function test_loads_xml()
     {
         $path = __DIR__.'/stubs/notes.xml';
-        $xml = XML::import($path)->get();
+        $xml = XML::import($path);
 
         $this->assertMatchesJsonSnapshot($xml->toJson());
     }
