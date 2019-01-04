@@ -18,33 +18,66 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     use Transformable;
 
 
+    /**
+     * @var array
+     */
     private $items;
 
 
+    /**
+     * XMLCollection constructor.
+     *
+     * @param $items
+     */
     public function __construct($items)
     {
         $this->items = (array)$items;
     }
 
 
+    /**
+     * Get the xml
+     *
+     * @return mixed
+     */
     public function get()
     {
         return $this->applyTransformers($this->items);
     }
 
 
+    /**
+     * Get the xml as a collection
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function collect()
     {
         return new Collection(json_decode(json_encode($this->items)));
     }
 
 
+    /**
+     * Pass overloaded methods to the items
+     *
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return mixed
+     */
     public function __call(string $name, array $arguments)
     {
         return $this->items->{$name}(...$arguments);
     }
 
 
+    /**
+     * Get a item from the xml
+     *
+     * @param $key
+     *
+     * @return mixed
+     */
     public function __get($key)
     {
         return $this->items->{$key};
@@ -52,7 +85,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
 
 
     /**
-     *
+     * Start a transform for the given key
      *
      * @param $key
      *
@@ -70,6 +103,11 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     }
 
 
+    /**
+     * Alias for transform
+     *
+     * @see transform
+     */
     public function expect($key)
     {
         return $this->transform($key);
@@ -183,7 +221,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
             }
 
             return $value;
-        }, (array)$this->items);
+        }, (array)$this->get());
     }
 
 
@@ -196,6 +234,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return array_map(function ($value) {
             return $value instanceof Arrayable ? $value->toArray() : $value;
-        }, (array)$this->items);
+        }, (array)$this->get());
     }
 }
