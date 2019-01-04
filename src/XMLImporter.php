@@ -61,7 +61,7 @@ class XMLImporter
     /**
      * Get the loaded xml
      *
-     * @return mixed|\ACFBentveld\XML\XMLElement
+     * @return mixed|XMLElement
      */
     public function get()
     {
