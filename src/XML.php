@@ -2,9 +2,9 @@
 
 namespace ACFBentveld\XML;
 
-use ACFBentveld\XML\Exporters\ArrayExporter;
-use ACFBentveld\XML\Exporters\ViewExporter;
 use File;
+use ACFBentveld\XML\Exporters\ViewExporter;
+use ACFBentveld\XML\Exporters\ArrayExporter;
 
 /**
  * An laravel xml parser package.
@@ -95,8 +95,6 @@ class XML
     {
         return new ViewExporter($viewName, $data);
     }
-
-
 
     public static function import(string $path)
     {

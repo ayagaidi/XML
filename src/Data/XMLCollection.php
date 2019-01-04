@@ -2,27 +2,25 @@
 
 namespace ACFBentveld\XML\Data;
 
-use ACFBentveld\XML\Transformers\PendingTransform;
-use ACFBentveld\XML\Transformers\Transformable;
+use Countable;
 use ArrayAccess;
 use ArrayIterator;
-use Countable;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Collection;
-use IteratorAggregate;
 use JsonSerializable;
+use IteratorAggregate;
+use Illuminate\Support\Collection;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
+use ACFBentveld\XML\Transformers\Transformable;
+use ACFBentveld\XML\Transformers\PendingTransform;
 
 class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {
     use Transformable;
 
-
     /**
      * @var array
      */
     private $items;
-
 
     /**
      * XMLCollection constructor.
@@ -31,12 +29,11 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      */
     public function __construct($items)
     {
-        $this->items = (array)$items;
+        $this->items = (array) $items;
     }
 
-
     /**
-     * Get the xml
+     * Get the xml.
      *
      * @return mixed
      */
@@ -45,9 +42,8 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return $this->applyTransformers($this->items);
     }
 
-
     /**
-     * Get the xml as a collection
+     * Get the xml as a collection.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -56,9 +52,8 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return new Collection(json_decode(json_encode($this->items)));
     }
 
-
     /**
-     * Pass overloaded methods to the items
+     * Pass overloaded methods to the items.
      *
      * @param string $name
      * @param array  $arguments
@@ -70,9 +65,8 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return $this->items->{$name}(...$arguments);
     }
 
-
     /**
-     * Get a item from the xml
+     * Get a item from the xml.
      *
      * @param $key
      *
@@ -83,9 +77,8 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return $this->items->{$key};
     }
 
-
     /**
-     * Start a transform for the given key
+     * Start a transform for the given key.
      *
      * @param $key
      *
@@ -102,9 +95,8 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         });
     }
 
-
     /**
-     * Alias for transform
+     * Alias for transform.
      *
      * @see transform
      */
@@ -112,7 +104,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return $this->transform($key);
     }
-
 
     /**
      * Count the number of items in the collection.
@@ -123,7 +114,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return count($this->items);
     }
-
 
     /**
      * Determine if an item exists at an offset.
@@ -137,7 +127,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return array_key_exists($key, $this->items);
     }
 
-
     /**
      * Get an item at a given offset.
      *
@@ -149,7 +138,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return $this->items[$key];
     }
-
 
     /**
      * Set the item at a given offset.
@@ -168,7 +156,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         }
     }
 
-
     /**
      * Unset the item at a given offset.
      *
@@ -181,7 +168,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         unset($this->items[$key]);
     }
 
-
     /**
      * Get an iterator for the items.
      *
@@ -192,7 +178,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return new ArrayIterator($this->items);
     }
 
-
     /**
      * Convert the collection to its string representation.
      *
@@ -202,7 +187,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return json_encode($this->jsonSerialize(), $options);
     }
-
 
     /**
      * Convert the object into something JSON serializable.
@@ -221,9 +205,8 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
             }
 
             return $value;
-        }, (array)$this->get());
+        }, (array) $this->get());
     }
-
 
     /**
      * Get the collection of items as a plain array.
@@ -234,6 +217,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return array_map(function ($value) {
             return $value instanceof Arrayable ? $value->toArray() : $value;
-        }, (array)$this->get());
+        }, (array) $this->get());
     }
 }
