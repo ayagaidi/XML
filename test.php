@@ -1,20 +1,29 @@
 <?php
+require_once 'vendor/autoload.php';
 
 use ACFBentveld\XML\XML;
 
-require_once 'vendor/autoload.php';
+class Note extends \Illuminate\Database\Eloquent\Model
+{
+    protected $fillable = [
+        'to',
+        'from',
+        'heading',
+        'body',
+        'completed_at'
+    ];
+}
 
-$data = [
-    0 => [
-        'john' => 'snow',
-        'knows' => 'nothing',
-    ],
-    1 => [
-        'dragons' => 'are',
-        'awesome arent:they' => 'yes they are', //lets use an attribute in here
-    ],
-];
+$path = __DIR__ . '/tests/Features/Import/stubs/notes.xml';
 
-XML::export(function () use ($data) {
-    return $data;
-})->setName('Red Wedding')->setRootTag('test')->export('test.xml');
+$xml = XML::import($path)
+    ->cast('note')->to(Note::class)
+    ->expect('note')->as('array')
+    ->get();
+
+dump($xml);
+//
+//$xml = XML::import($path)
+//    ->collect();
+//
+//dump($xml);
