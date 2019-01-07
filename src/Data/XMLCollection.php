@@ -2,18 +2,18 @@
 
 namespace ACFBentveld\XML\Data;
 
-use ACFBentveld\XML\Casts\Cast;
-use ACFBentveld\XML\Casts\PendingCast;
-use ACFBentveld\XML\Transformers\PendingTransform;
-use ACFBentveld\XML\Transformers\Transformable;
+use Countable;
 use ArrayAccess;
 use ArrayIterator;
-use Countable;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Collection;
-use IteratorAggregate;
 use JsonSerializable;
+use IteratorAggregate;
+use ACFBentveld\XML\Casts\Cast;
+use Illuminate\Support\Collection;
+use ACFBentveld\XML\Casts\PendingCast;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
+use ACFBentveld\XML\Transformers\Transformable;
+use ACFBentveld\XML\Transformers\PendingTransform;
 
 class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {
@@ -107,7 +107,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return $this->transform($key);
     }
 
-
     /**
      * Start a cast for the given key.
      *
@@ -118,7 +117,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     public function cast($key)
     {
         return new PendingCast($this, function ($cast) use ($key) {
-            $this->items[$key] = Cast::to((array)$this->items[$key], $cast);
+            $this->items[$key] = Cast::to((array) $this->items[$key], $cast);
 
             return $this;
         });
