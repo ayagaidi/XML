@@ -2,8 +2,8 @@
 
 namespace ACFBentveld\XML\Tests\Features\Import;
 
-use ACFBentveld\XML\Tests\TestCase;
 use ACFBentveld\XML\XML;
+use ACFBentveld\XML\Tests\TestCase;
 
 /**
  * This test is based on version 1.* of the package. This will change in v2.

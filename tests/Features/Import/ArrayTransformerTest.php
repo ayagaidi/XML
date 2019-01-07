@@ -2,9 +2,9 @@
 
 namespace ACFBentveld\XML\Tests\Features\Import;
 
+use ACFBentveld\XML\XML;
 use ACFBentveld\XML\Tests\TestCase;
 use ACFBentveld\XML\Transformers\ArrayTransformer;
-use ACFBentveld\XML\XML;
 
 class ArrayTransformerTest extends TestCase
 {
@@ -18,10 +18,9 @@ class ArrayTransformerTest extends TestCase
         $this->assertMatchesJsonSnapshot($json);
     }
 
-
     public function test_applies_array_correctly()
     {
-        $path = __DIR__ . '/stubs/notes-2.xml';
+        $path = __DIR__.'/stubs/notes-2.xml';
         $json = XML::import($path)
             ->transform('note')->with(ArrayTransformer::class)
             ->toJson();
@@ -29,10 +28,9 @@ class ArrayTransformerTest extends TestCase
         $this->assertMatchesJsonSnapshot($json);
     }
 
-
     public function test_applies_array_transform_using_alias()
     {
-        $path = __DIR__ . '/stubs/notes.xml';
+        $path = __DIR__.'/stubs/notes.xml';
         $json = XML::import($path)
             ->expect('note')->as('array')
             ->toJson();
@@ -40,10 +38,9 @@ class ArrayTransformerTest extends TestCase
         $this->assertMatchesJsonSnapshot($json);
     }
 
-
     public function test_applies_array_correctly_using_alias()
     {
-        $path = __DIR__ . '/stubs/notes-2.xml';
+        $path = __DIR__.'/stubs/notes-2.xml';
         $json = XML::import($path)
             ->expect('note')->as('array')
             ->toJson();
