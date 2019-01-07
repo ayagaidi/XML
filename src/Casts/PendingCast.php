@@ -1,8 +1,6 @@
 <?php
 
-
 namespace ACFBentveld\XML\Casts;
-
 
 class PendingCast
 {
@@ -11,7 +9,6 @@ class PendingCast
      * @var \Closure
      */
     private $resolve;
-
 
     /**
      * Create a new PendingTransform.
@@ -24,7 +21,6 @@ class PendingCast
         $this->context = $context;
         $this->resolve = $resolve;
     }
-
 
     /**
      * Transform and resolve using a transformer.

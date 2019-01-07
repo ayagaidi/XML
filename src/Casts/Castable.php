@@ -1,13 +1,11 @@
 <?php
 
-
 namespace ACFBentveld\XML\Casts;
-
 
 interface Castable
 {
     /**
-     * Invoked every time this class was cast to XMLElement
+     * Invoked every time this class was cast to XMLElement.
      *
      * @param array $data
      *
