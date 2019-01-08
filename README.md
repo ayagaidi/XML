@@ -1,9 +1,17 @@
-# Laravel XML reader
+# Laravel XML made easy!
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/acfbentveld/xml.svg?style=flat-square)](https://packagist.org/packages/acfbentveld/xml)
 [![Total Downloads](https://img.shields.io/packagist/dt/acfbentveld/xml.svg?style=flat-square)](https://packagist.org/packages/acfbentveld/xml)
+[![Build Status](https://img.shields.io/travis/ACFBentveld/XML/master.svg?style=flat-square)](https://travis-ci.org/ACFBentveld/XML)
+[![StyleCI](https://github.styleci.io/repos/137213815/shield?branch=master)](https://github.styleci.io/repos/137213815)
 
-This reader contains an xml reader for laravel. This package can read xml files into objects or collections wich makes it easy to edit the xml data. It also comes with a optimize function to restore broken data or to fix keys that are not allowed to use in PHP. 
+This package is optimized XML handling package for Laravel aiming to be easy and fast.
+
+The main features are
+
+* Fast XML importing with the ability to cast to classes and models
+* XML exporting from (nested / value only ) arrays
+* Exporting Laravel views to XML
 
 ## Installation
 
@@ -14,86 +22,21 @@ composer require acfbentveld/xml
 ```
 
 ## Usage
-This packages comes with a facade. You can use the package like this `\XML::` or use it in your class like `use XML;`
+This packages comes with a facade which you can use like this `\XML::` or use it in your class like `use XML;`
 
-This package can also export data to XML. 
-* [Export collection to xml](https://acfbentveld.github.io/XML/docs/export)
-* [Export view to xml](https://acfbentveld.github.io/XML/docs/export)
+In depth guides can be found here:
+
+* [Exporting](https://acfbentveld.github.io/XML/docs/export)
+* [Importing](https://acfbentveld.github.io/XML/docs/export)
 
 
-
-### Read xml file
-To read an xml file, it must be stored on the server. Call the file using the full path.
-use the `path()` function to read the xml file. 
 ```php
-    $path = storage_path().'/my-xml.xml';
-    $xml = XML::path($path)->optimize()->collect(); //returend an optimized collection
-    $xml = XML::path($path)->object(); //returns an stdClass
-    $xml = XML::path($path)->optimize()->raw(); //returns the xml file
-``` 
+$notes = XML::import("notes.xml")
+    ->cast('note')->to(NoteModel::class)
+    ->expect('note')->as('array')
+    ->optimize('camelcase')
+    ->get();
 
-
-### Optimize
-Sometimes the exported xml has broken keys or you just don't like the idea that empty values are translated as objects in simpleXMl. Use the `optimize()` function to optimize the data for PHP. It repairs the keys and sets empty values as `NULL`.
-```php
-    $path = storage_path().'/my-xml.xml';
-    $xml = XML::path($path)->optimize();
-```
-
-#### Convert XML data
-The xml data can be exported to a few formats. 
-* Object
-* Collection object
-* Raw (SimpleXMlObject)
-
-#### object
-Export the data as an object (optimize is optional but recomended)
-```php
-    $path = storage_path().'/my-xml.xml';
-    $xml = XML::path($path)->optimize()->object();
-    dd($xml);
-```
-
-#### collection (recomended)
-Export the data as a collection (optimize is optional but recomended)
-```php
-    $path = storage_path().'/my-xml.xml';
-    $xml = XML::path($path)->optimize()->collect();
-    dd($xml);
-```
-
-#### raw SimpleXML
-Export the data as a SimpleXMLObject (optimize won't work with the function `raw` since it is a raw export)
-```php
-    $path = storage_path().'/my-xml.xml';
-    $xml = XML::path($path)->raw();
-    dd($xml);
-```
-
-#### cast
-Some database columns don't accept `null` values, but if your xml contains values that are nullable, you got yourself a problem. For that situation there is the `cast` method. It replaces values in your data.
-```php
-    $path = storage_path().'/my-xml.xml';
-    $xml = XML::path($path)->cast(null, ''); //casts every null value to an empty string
-    dd($xml);
-```
-But there is more. It allows also `double`, `numeric`, `null`, `bool`, `false`, `true`
-```php
-    $xml = XML::path($path)->cast(null, ''); //casts every null value to an empty string
-    $xml = XML::path($path)->cast(false, ''); //casts every false value to an empty string
-    $xml = XML::path($path)->cast(true, ''); //casts every true value to an empty string
-    $xml = XML::path($path)->cast('numeric', ''); //casts every numeric value to an empty string
-    $xml = XML::path($path)->cast(null, ''); //casts every null value to an empty string
-    $xml = XML::path($path)->cast('double', ''); //casts every double value to an empty string
-```
-
-#### Return expectation
-Some xml files have onbly one row. In that case you dont want an array to be returned but the object instead.
-You can set the `expectArray` method to false to return the object instead.
-```php
-    $path = storage_path().'/my-xml.xml';
-    $xml = XML::path($path)->expectArray(false)->optimize()->collect();
-    dd($xml);
 ```
 
 
@@ -109,11 +52,6 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
 
 If you discover any security related issues, please email wim@acfbentveld.nl instead of using the issue tracker.
 
-## Postcardware
-
-You're free to use this package, but if it makes it to your production environment we highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using.
-
-Our address is: ACF Bentveld, Ecu 2 8305 BA, Emmeloord, Netherlands.
 
 ## Credits
 
