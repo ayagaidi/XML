@@ -16,9 +16,10 @@ class Cast
      */
     public static function to(array $what, $to)
     {
+        $interfaces = class_implements($to);
         if ($to instanceof Model) {
             return new $to($what);
-        } elseif ($to instanceof Castable) {
+        } elseif ($to instanceof Castable || isset($interfaces[Castable::class])) {
             return $to::fromCast($what);
         }
 

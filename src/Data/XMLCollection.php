@@ -116,6 +116,12 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     public function cast($key): PendingCast
     {
         return new PendingCast($this, function ($cast) use ($key) {
+            if (is_array($this->items[$key])) {
+                $this->items[$key] = array_map(function ($item) use ($key, $cast) {
+                    return Cast::to((array)$item, $cast);
+                }, $this->items[$key]);
+                return $this;
+            }
             $this->items[$key] = Cast::to((array)$this->items[$key], $cast);
 
             return $this;

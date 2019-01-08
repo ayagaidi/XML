@@ -12,6 +12,7 @@
     <testsuites>
         <testsuite name="ACFBentveld Test Suite">
             <directory>tests</directory>
+            <exclude>tests/Features/Import/example</exclude>
         </testsuite>
     </testsuites>
     <filter>

@@ -11,5 +11,5 @@ interface Castable
      *
      * @return Castable
      */
-    public static function fromCast(array $data): Castable;
+    public static function fromCast(array $data): self;
 }

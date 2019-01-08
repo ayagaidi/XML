@@ -1,6 +1,7 @@
 <?php
 require_once 'vendor/autoload.php';
 
+use ACFBentveld\XML\Tests\Features\Import\example\Plant;
 use ACFBentveld\XML\XML;
 
 class Note extends \Illuminate\Database\Eloquent\Model
@@ -14,15 +15,21 @@ class Note extends \Illuminate\Database\Eloquent\Model
     ];
 }
 
-$path = __DIR__ . '/tests/Features/Import/stubs/notes.xml';
+$path = __DIR__ . '/tests/Features/Import/stubs/plants.xml';
 
 $xml = XML::import($path)
     //->cast('note')->to(Note::class)
     //->expect('note')->as('array')
-    ->optimize('camelcase')
-    ->toJson();
+    //->optimize('camelcase')
+    ->get();
 
-dump($xml);
+//dump(...array_values((array)$xml->PLANT[0]));
+
+$plant = XML::import($path)
+    ->cast('PLANT')->to(Plant::class)
+    ->get();
+
+dd($plant);
 //
 //$xml = XML::import($path)
 //    ->collect();
