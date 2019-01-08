@@ -17,9 +17,8 @@ class XMLElement extends \SimpleXMLElement
         return (string) $this->attributes()->{$name} ?: $default;
     }
 
-
     /**
-     * Checks if a attribute is present
+     * Checks if a attribute is present.
      *
      * @param string $attribute - the name of the attribute
      *

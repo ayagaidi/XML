@@ -6,18 +6,17 @@ use ACFBentveld\XML\Casts\Castable;
 
 class Plant implements Castable
 {
-    public $common = "Foo";
+    public $common = 'Foo';
 
-    public $botanical = "Bar";
+    public $botanical = 'Bar';
 
     public $zone = -1;
 
-    public $light = "Baz";
+    public $light = 'Baz';
 
     public $price = -1;
 
     public $availability = -1;
-
 
     public function __construct($common, $botanical, $zone, $light, $price, $availability)
     {
@@ -28,7 +27,6 @@ class Plant implements Castable
         $this->price = $price;
         $this->availability = $availability;
     }
-
 
     public static function fromCast(array $data): Castable
     {

@@ -2,19 +2,19 @@
 
 namespace ACFBentveld\XML\Data;
 
-use ACFBentveld\XML\Casts\Cast;
-use ACFBentveld\XML\Casts\PendingCast;
-use ACFBentveld\XML\Transformers\PendingTransform;
-use ACFBentveld\XML\Transformers\Transformable;
-use ACFBentveld\XML\XML;
+use Countable;
 use ArrayAccess;
 use ArrayIterator;
-use Countable;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Collection;
-use IteratorAggregate;
 use JsonSerializable;
+use IteratorAggregate;
+use ACFBentveld\XML\XML;
+use ACFBentveld\XML\Casts\Cast;
+use Illuminate\Support\Collection;
+use ACFBentveld\XML\Casts\PendingCast;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
+use ACFBentveld\XML\Transformers\Transformable;
+use ACFBentveld\XML\Transformers\PendingTransform;
 
 class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {
@@ -26,7 +26,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      */
     private $items;
 
-
     /**
      * XMLCollection constructor.
      *
@@ -34,9 +33,8 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      */
     public function __construct($items)
     {
-        $this->items = new XMLObject((array)$items);
+        $this->items = new XMLObject((array) $items);
     }
-
 
     /**
      * Get the xml as a collection.
@@ -47,7 +45,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return new Collection(json_decode(json_encode($this->items)));
     }
-
 
     /**
      * Pass overloaded methods to the items.
@@ -62,7 +59,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return $this->items->{$name}(...$arguments);
     }
 
-
     /**
      * Get a item from the xml.
      *
@@ -75,7 +71,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return $this->items->{$key};
     }
 
-
     /**
      * Alias for transform.
      *
@@ -85,7 +80,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return $this->transform($key);
     }
-
 
     /**
      * Start a transform for the given key.
@@ -105,7 +99,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         });
     }
 
-
     /**
      * Start a cast for the given key.
      *
@@ -118,16 +111,16 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return new PendingCast($this, function ($cast) use ($key) {
             if (is_array($this->items[$key])) {
                 $this->items[$key] = array_map(function ($item) use ($key, $cast) {
-                    return Cast::to((array)$item, $cast);
+                    return Cast::to((array) $item, $cast);
                 }, $this->items[$key]);
+
                 return $this;
             }
-            $this->items[$key] = Cast::to((array)$this->items[$key], $cast);
+            $this->items[$key] = Cast::to((array) $this->items[$key], $cast);
 
             return $this;
         });
     }
-
 
     public function optimize($type = XML::OPTIMIZE_UNDERSCORE)
     {
@@ -135,7 +128,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
 
         return $this;
     }
-
 
     /**
      * Count the number of items in the collection.
@@ -146,7 +138,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return count($this->items);
     }
-
 
     /**
      * Determine if an item exists at an offset.
@@ -160,7 +151,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return array_key_exists($key, $this->items);
     }
 
-
     /**
      * Get an item at a given offset.
      *
@@ -172,7 +162,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return $this->items[$key];
     }
-
 
     /**
      * Set the item at a given offset.
@@ -191,7 +180,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         }
     }
 
-
     /**
      * Unset the item at a given offset.
      *
@@ -204,7 +192,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         unset($this->items[$key]);
     }
 
-
     /**
      * Get an iterator for the items.
      *
@@ -215,7 +202,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return new ArrayIterator($this->items);
     }
 
-
     /**
      * Convert the collection to its string representation.
      *
@@ -225,7 +211,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return json_encode($this->jsonSerialize(), $options);
     }
-
 
     /**
      * Convert the object into something JSON serializable.
@@ -244,9 +229,8 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
             }
 
             return $value;
-        }, (array)$this->get()->toArray());
+        }, (array) $this->get()->toArray());
     }
-
 
     /**
      * Get the xml.
@@ -256,12 +240,12 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     public function get()
     {
         $items = $this->applyOptimize();
+
         return $this->applyTransformers($items);
     }
 
-
     /**
-     * Apply to optimization
+     * Apply to optimization.
      *
      * @return \ACFBentveld\XML\Data\XMLObject|array
      */
@@ -271,6 +255,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
             $method = function ($key) {
                 $key = strtolower(str_replace('.', '_', $key));
                 $key = str_replace(' ', '_', $key);
+
                 return str_replace('-', '_', $key);
             };
         } elseif ($this->optimize === XML::OPTIMIZE_CAMELCASE) {
@@ -280,12 +265,12 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         } else {
             return $this->items;
         }
+
         return new XMLObject($this->loopOptimize($this->items->toArray(), $method));
     }
 
-
     /**
-     * Recursively optimize the xml using the chosen method
+     * Recursively optimize the xml using the chosen method.
      *
      * @param          $items
      * @param \Closure $callback
@@ -294,9 +279,9 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      */
     private function loopOptimize($items, \Closure $callback)
     {
-        $items = (array)$items;
+        $items = (array) $items;
         $data = [];
-        if (!count($items)) {
+        if (! count($items)) {
             return [];
         }
         foreach ($items as $key => $value) {
@@ -314,7 +299,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return $data;
     }
 
-
     /**
      * Get the collection of items as a plain array.
      *
@@ -324,6 +308,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return array_map(function ($value) {
             return $value instanceof Arrayable ? $value->toArray() : $value;
-        }, (array)$this->get());
+        }, (array) $this->get());
     }
 }

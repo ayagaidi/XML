@@ -9,6 +9,6 @@ class Note extends \Illuminate\Database\Eloquent\Model
         'from',
         'heading',
         'body',
-        'completed_at'
+        'completed_at',
     ];
 }
