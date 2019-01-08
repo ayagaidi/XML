@@ -2,118 +2,195 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/acfbentveld/xml.svg?style=flat-square)](https://packagist.org/packages/acfbentveld/xml)
 [![Total Downloads](https://img.shields.io/packagist/dt/acfbentveld/xml.svg?style=flat-square)](https://packagist.org/packages/acfbentveld/xml)
+[![Build Status](https://img.shields.io/travis/ACFBentveld/XML/master.svg?style=flat-square)](https://travis-ci.org/ACFBentveld/XML)
+[![StyleCI](https://github.styleci.io/repos/137213815/shield?branch=master)](https://github.styleci.io/repos/137213815)
+
+- [Base Methods](#base-methods)
+- [Exporting arrays](#exporting-arrays)
+- [Exporting a array without keys](#exporting-a-array-without-keys)
+- [Changing the <item> name](#changing-the-item-name)
+    - [Using a custom <root> and <item> name.](#using-a-custom-root-and-item-name)
+- [Exporting views](#exporting-views)
 
 ## Exporting data to XML
-An easy way to export your data to XML is using the `XML::export` method. This method can load views or translate collections to XML.
-
-Checkout the import methods
-* [Import XML](https://acfbentveld.github.io/XML/)
+An easy way to export your data to XML is using the `XML::export` method. This method can load views or translate arrays to XML.
 
 
-### Methods
+### Base Methods
 Some important methods you need to know about.
-* setName(`string $name`) if you want to change the tag name. Default `export`
-* setVersion(`string $version`) if you want to change the xml version. Default `1.0`
-* setIso(`string $iso`) if you want to change the xml ISO. Default `UTF-8`
-* setType(`string $type`) if you want to change the XML type. Default `xml`
+* setRootTag(`string $name`) or rootTag(`string $name`) - if you want to change the tag name. Default `export`
+* version(`string $version`) - if you want to change the xml version. Default `1.0`
+* encoding(`string $encoding`) - if you want to change the xml encoding. Default `UTF-8`
+* toString() - if you want to get the xml output as a string
+* toFile(`string $path`) - if you want to save the xml to a file directly.
+* forceItemName() - if you want to disable default item name generation
+* disableRootTag() - if you want to disable the root tag
+
+### Exporting arrays
+
+To export a array to xml you need to use the `export()` method.
 
 ```php
-    $preview = XML::export()->setName('export')->setVersion('1.0')->setIso('UTF-8')->setType('xml')->export();
+$data = [
+    'file' => [
+        [
+            'name' => 'file1',
+            'type' => 'pdf',
+        ],
+        [
+            'name' => 'file2',
+            'type' => 'png',
+        ],
+        [
+            'name' => 'file3',
+            'type' => 'xml',
+        ],
+    ],
+];
+
+$xml = XML::export($data)
+    ->toString();
 ```
 
-### Simple export
-Just a simple sample for exporting data to XML. Also in this sample we will use an atribute. Every attribute contains the `:` character. 
+This produces the following xml as a string
 
-```php
-    
-    $data = array(
-        0 => array(
-            'john' => 'snow',
-            'knows' => 'nothing' 
-        ),
-        1 => array(
-            'dragons' => 'are',
-            'awesome arent:they' => "yes they are" //lets use an attribute in here
-        )
-    );
-    
-    XML::export(function() use ($data){
-        return $data; //or do domething funny here. We will just return it here.
-    })
-    ->setName('Red Wedding') // this is the elements name
-    ->export(storage_path('app/media')); //or use saveAs to set a name
-    
-```
-Above will create an XML document that looks like this : 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<xml>
-    <red-wedding>
-        <john>snow</john>
-        <knows>nothing</knows>
-    </red-wedding>
-    <red-wedding>
-        <dragons>are</dragons>
-        <!-- there it is. The attribute-->
-        <awesome arent:they="yes they are" /> 
-    </red-wedding>
-</xml>
+<files>
+  <file>
+    <name>file1</name>
+    <type>pdf</type>
+  </file>
+  <file>
+    <name>file2</name>
+    <type>png</type>
+  </file>
+  <file>
+    <name>file3</name>
+    <type>xml</type>
+  </file>
+</files>
 ```
 
-### Exporting collections 
-Exporting collections works as simpel as the default export method. Init the facade. Call the method en done.
-Trust me i know something.
+If you want to save it as a file simply replace `toString()` with `toFile("/my/path/file.xml")`
+
+### Exporting a array without keys
+
+Version 2 of the package makes it possible to export simple arrays that do not have keys.
 
 ```php
-    $collection = User::all();
-    XML::export()->loadCollection($collection)->export('red_wedding_guys.xml'); //yes you can pass the name to this method also
-```
-Thats it. The export method will create a nice and neat xml file.
+$data = [
+    'file1',
+    'file2',
+    'file3',
+];
 
-### Loading views (magic)
-Yes, this is where the dragons become real. Loading a view and translate it to XML. It can't get any easier. 
+$xml = XML::export($data);
 
-Lets call the `loadView` method and get started
-```php
-$users = User::all();
-XML::export()->loadView('users.export', compact('users'))->export(storage_path('red_wedding_members.xml'));
 ```
 
-Create a view and insert a table like below:
-```html
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>\
-            <th>Memo</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach($users as $user)
-        <tr>
-            <td>{{$user->name}}</td>
-            <td>{{$user->email}}</td>
-            <td>{{$user->memo}}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
-```
-The above code will output an XML like 
+Would create
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<xml>
-    <export>
-        <name>Lord Walder</name>
-        <email>waldy@casterlyrock.com</email>
-        <memo>Anoying person</memo>
-    </export>
-    <export>
-        <name>Rob Stark</name>
-        <email>robert@starkindustries.com</email>
-        <memo>Can't come. Got headache</memo>
-    </export>
-</xml>
+<root>
+  <item>file1</item>
+  <item>file2</item>
+  <item>file3</item>
+</root>
+```
 
+### Changing the <item> name
+
+If you want to change to item name set it using `->itemName($name)`.
+
+```php
+$data = [
+    'file1',
+    'file2',
+    'file3',
+];
+
+$xml = XML::export($data)
+    ->itemName('file');
+
+```
+
+Would create
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <file>file1</file>
+  <file>file2</file>
+  <file>file3</file>
+</root>
+```
+
+#### Using a custom <root> and <item> name.
+
+By default the default item name is based on a singular case of the root tag.
+If the root tag is "root" we will use "item" as the default item name.
+
+If you are using a custom root tag like "files" we would set the default item name to "file".
+To set your own item name use `->itemName($name)` and then `->forceItemName()`.
+
+```php
+$data = [
+    'file1',
+    'file2',
+    'file3',
+];
+
+$xml = XML::export($data)
+    ->rootTag('user_files')
+    ->itemName('file');
+
+```
+
+Would create
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<user_files>
+    <user_file>file1</user_file>
+    <user_file>file2</user_file>
+    <user_file>file3</user_file>
+</user_files>
+```
+
+```php
+$data = [
+    'file1',
+    'file2',
+    'file3',
+];
+
+$xml = XML::export($data)
+    ->rootTag('user_files')
+    ->itemName('file')
+    ->forceItemName();
+
+```
+
+Would create
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<user_files>
+    <file>file1</file>
+    <file>file2</file>
+    <file>file3</file>
+</user_files>
+```
+
+
+### Exporting views
+
+To export a view simply call `exportView($viewName, $data = [])`
+
+```php
+
+$xml = XML::exportView('my-view', [])
+    ->toString();
 ```
