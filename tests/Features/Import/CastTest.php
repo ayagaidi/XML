@@ -2,10 +2,10 @@
 
 namespace ACFBentveld\XML\Tests\Features\Import;
 
+use ACFBentveld\XML\XML;
+use ACFBentveld\XML\Tests\TestCase;
 use ACFBentveld\XML\Tests\Features\Import\example\Note;
 use ACFBentveld\XML\Tests\Features\Import\example\Plant;
-use ACFBentveld\XML\Tests\TestCase;
-use ACFBentveld\XML\XML;
 
 class CastTest extends TestCase
 {
@@ -20,7 +20,6 @@ class CastTest extends TestCase
         $this->assertEquals('Foo', $note->to);
         $this->assertEquals('Bar', $note->from);
     }
-
 
     /**
      * @requires PHPUnit 7.5.1
