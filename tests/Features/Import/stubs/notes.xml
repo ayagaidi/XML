@@ -1,5 +1,6 @@
 <notes>
     <note completed="true">
+        <to.user>test</to.user>
         <to attr="test">Foo</to>
         <from>Bar</from>
         <heading>Baz</heading>

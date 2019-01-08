@@ -17,11 +17,11 @@ class Note extends \Illuminate\Database\Eloquent\Model
 $path = __DIR__ . '/tests/Features/Import/stubs/notes.xml';
 
 $xml = XML::import($path)
-    ->cast('note')->to(Note::class)
-    ->expect('note')->as('array')
-    ->get();
+    //->cast('note')->to(Note::class)
+    //->expect('note')->as('array')
+    ->get(true);
 
-dump($xml);
+dump($xml->note->hasAttribute('completed'));
 //
 //$xml = XML::import($path)
 //    ->collect();

@@ -16,4 +16,17 @@ class XMLElement extends \SimpleXMLElement
     {
         return (string) $this->attributes()->{$name} ?: $default;
     }
+
+
+    /**
+     * Checks if a attribute is present
+     *
+     * @param string $attribute - the name of the attribute
+     *
+     * @return bool
+     */
+    public function hasAttribute(string $attribute): bool
+    {
+        return $this->attributes()->{$attribute} !== null;
+    }
 }

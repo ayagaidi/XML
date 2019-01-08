@@ -2,18 +2,18 @@
 
 namespace ACFBentveld\XML\Data;
 
-use Countable;
+use ACFBentveld\XML\Casts\Cast;
+use ACFBentveld\XML\Casts\PendingCast;
+use ACFBentveld\XML\Transformers\PendingTransform;
+use ACFBentveld\XML\Transformers\Transformable;
 use ArrayAccess;
 use ArrayIterator;
-use JsonSerializable;
-use IteratorAggregate;
-use ACFBentveld\XML\Casts\Cast;
-use Illuminate\Support\Collection;
-use ACFBentveld\XML\Casts\PendingCast;
-use Illuminate\Contracts\Support\Jsonable;
+use Countable;
 use Illuminate\Contracts\Support\Arrayable;
-use ACFBentveld\XML\Transformers\Transformable;
-use ACFBentveld\XML\Transformers\PendingTransform;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Collection;
+use IteratorAggregate;
+use JsonSerializable;
 
 class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {
@@ -34,14 +34,18 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         $this->items = (array) $items;
     }
 
+
     /**
      * Get the xml.
      *
-     * @return mixed
+     * @param bool $asObject - set to true if you want a object instead of a array
+     *
+     * @return mixed|object
      */
-    public function get()
+    public function get($asObject = false)
     {
-        return $this->applyTransformers($this->items);
+        return $asObject ? (object)$this->applyTransformers($this->items)
+            : $this->applyTransformers($this->items);
     }
 
     /**
@@ -49,7 +53,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      *
      * @return \Illuminate\Support\Collection
      */
-    public function collect()
+    public function collect(): Collection
     {
         return new Collection(json_decode(json_encode($this->items)));
     }
@@ -86,7 +90,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      *
      * @return \ACFBentveld\XML\Transformers\PendingTransform
      */
-    public function transform($key)
+    public function transform($key): PendingTransform
     {
         return new PendingTransform($this, function ($transformer) use ($key) {
             $this->items[$key] = is_callable($transformer) ?
@@ -102,7 +106,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      *
      * @see transform
      */
-    public function expect($key)
+    public function expect($key): PendingTransform
     {
         return $this->transform($key);
     }
@@ -114,7 +118,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      *
      * @return \ACFBentveld\XML\Casts\PendingCast
      */
-    public function cast($key)
+    public function cast($key): PendingCast
     {
         return new PendingCast($this, function ($cast) use ($key) {
             $this->items[$key] = Cast::to((array) $this->items[$key], $cast);
@@ -140,7 +144,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      *
      * @return bool
      */
-    public function offsetExists($key)
+    public function offsetExists($key): bool
     {
         return array_key_exists($key, $this->items);
     }
@@ -201,7 +205,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      *
      * @return string
      */
-    public function toJson($options = 0)
+    public function toJson($options = 0): string
     {
         return json_encode($this->jsonSerialize(), $options);
     }
@@ -211,7 +215,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      *
      * @return array
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_map(function ($value) {
             if ($value instanceof JsonSerializable) {
@@ -231,7 +235,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return array_map(function ($value) {
             return $value instanceof Arrayable ? $value->toArray() : $value;

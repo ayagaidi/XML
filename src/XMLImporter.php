@@ -2,10 +2,10 @@
 
 namespace ACFBentveld\XML;
 
+use ACFBentveld\XML\Data\XMLCollection;
+use ACFBentveld\XML\Data\XMLElement;
 use Exception;
 use SimpleXMLElement;
-use ACFBentveld\XML\Data\XMLElement;
-use ACFBentveld\XML\Data\XMLCollection;
 
 class XMLImporter
 {
@@ -22,6 +22,7 @@ class XMLImporter
      */
     protected $output;
 
+
     /**
      * XMLImporter constructor.
      *
@@ -34,6 +35,7 @@ class XMLImporter
         $this->path = $path;
         $this->load();
     }
+
 
     /**
      * Load the xml.
@@ -53,10 +55,11 @@ class XMLImporter
         }
     }
 
+
     /**
      * Get the loaded xml.
      *
-     * @return XMLCollection
+     * @return \ACFBentveld\XML\Data\XMLCollection
      */
     public function get()
     {
