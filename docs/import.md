@@ -38,7 +38,7 @@ To get a attribute value use `->attribute($name, $defaultValue = null)`
 
 To check if a attribute exists use `->hasAttribute($name)`
 
-For more information and examples on the basics checkout the `examples/` folder.
+For more information and examples on the basics see the [examples/basic.php](/examples/basic.php) file.
 
 ### Importing a file
 
@@ -72,7 +72,7 @@ If the class is not a laravel model we pass a array with data to the constructor
 
 If you want to change this behavior apply the `ACFBentveld\XML\Casts\Castable` interface on your class.
 
-For more information and examples on casting checkout the `examples/casts` folder.
+For more information and examples on casting checkout the [examples/casts.php](/examples/casts.php) file.
 
 
 ### Transforming
@@ -161,7 +161,7 @@ So lets use
 
 > `expect()` is just a alias for `transform()` and `as()` is a alias for `with()` that takes a class alias
 
-For more information and examples on transforming checkout the `examples/transforms` folder.
+For more information and examples on transforming checkout the [examples/transformers.php](/examples/transformers.php) file.
 
 ### Optimizing
 
