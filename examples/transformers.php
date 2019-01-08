@@ -2,18 +2,16 @@
 
 require_once '../vendor/autoload.php';
 
-use ACFBentveld\XML\Data\XMLElement;
-use ACFBentveld\XML\Transformers\ArrayTransformer;
-use ACFBentveld\XML\Transformers\Transformer;
 use ACFBentveld\XML\XML;
+use ACFBentveld\XML\Data\XMLElement;
+use ACFBentveld\XML\Transformers\Transformer;
+use ACFBentveld\XML\Transformers\ArrayTransformer;
 
 // We offer a array transformer by default that wraps the item with array_wrap
-
 
 // ===============
 // Simple array transform using build in alias
 // ===============
-
 
 $xml = XML::import('notes.xml')
     ->expect('note')->as('array')
@@ -27,17 +25,15 @@ $xml = XML::import('notes.xml')
 
 // $xml->note will now always be a array
 
-
 // ===============
 //Custom transformer
 // ===============
-
 
 // Example transformer to filter only the completed notes
 class CompletedNoteFilter implements Transformer
 {
     /**
-     * Filter only the completed notes
+     * Filter only the completed notes.
      *
      * @param mixed $data
      *
@@ -46,18 +42,16 @@ class CompletedNoteFilter implements Transformer
     public static function apply($data)
     {
         return array_filter($data, function ($note) {
-            /**
+            /*
              * @var $note XMLElement
              */
-            return $note->attribute("completed", false) === "true";
+            return $note->attribute('completed', false) === 'true';
         });
     }
 }
-
 
 $xml = XML::import('notes-2.xml')
     ->transform('note')->with(CompletedNoteFilter::class)
     ->get();
 
 // $xml->note now only has notes that are completed
-

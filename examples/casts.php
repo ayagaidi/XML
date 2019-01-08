@@ -1,13 +1,13 @@
 <?php
+
 require_once '../vendor/autoload.php';
 
-use ACFBentveld\XML\Casts\Castable;
 use ACFBentveld\XML\XML;
+use ACFBentveld\XML\Casts\Castable;
 
 // ===============
 // Model cast
 // ===============
-
 
 class Note extends \Illuminate\Database\Eloquent\Model
 {
@@ -16,7 +16,7 @@ class Note extends \Illuminate\Database\Eloquent\Model
         'from',
         'heading',
         'body',
-        'completed_at'
+        'completed_at',
     ];
 }
 
@@ -26,11 +26,9 @@ $xml = XML::import('notes.xml')
 
 // $xml->note is now a Note model instance
 
-
 // ===============
 // Castable cast
 // ===============
-
 
 class TextNote implements Castable
 {
@@ -38,7 +36,6 @@ class TextNote implements Castable
     {
         // ...
     }
-
 
     public static function fromCast(array $data): Castable
     {
@@ -50,11 +47,9 @@ $xml = XML::import('notes.xml')
     ->cast('note')->to(TextNote::class)
     ->get();
 
-
 // ===============
 // Default cast
 // ===============
-
 
 class MyNote
 {

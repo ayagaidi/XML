@@ -1,16 +1,14 @@
 <?php
 
-
 namespace ACFBentveld\XML\Data;
 
-
+use Countable;
 use ArrayAccess;
 use ArrayIterator;
-use Countable;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use IteratorAggregate;
 use JsonSerializable;
+use IteratorAggregate;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
 
 class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {
@@ -24,7 +22,6 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
      */
     protected $attributes;
 
-
     /**
      * XMLDocument constructor.
      *
@@ -32,14 +29,12 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
      */
     public function __construct($xml)
     {
-        if (isset($xml["@attributes"])) {
-            $this->attributes = $xml["@attributes"];
-            unset($xml["@attributes"]);
+        if (isset($xml['@attributes'])) {
+            $this->attributes = $xml['@attributes'];
+            unset($xml['@attributes']);
         }
         $this->items = $xml;
-
     }
-
 
     /**
      * Get a attribute by name.
@@ -54,9 +49,8 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
         return $this->hasAttribute($name) ? $this->attributes[$name] : $default;
     }
 
-
     /**
-     * Checks if a attribute is present
+     * Checks if a attribute is present.
      *
      * @param string $attribute - the name of the attribute
      *
@@ -66,7 +60,6 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
     {
         return array_key_exists($attribute, $this->attributes);
     }
-
 
     /**
      * Get a item from the xml.
@@ -80,7 +73,6 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
         return $this->items[$key];
     }
 
-
     /**
      * Count the number of items in the collection.
      *
@@ -90,7 +82,6 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
     {
         return count($this->items);
     }
-
 
     /**
      * Determine if an item exists at an offset.
@@ -104,7 +95,6 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
         return array_key_exists($key, $this->items);
     }
 
-
     /**
      * Get an item at a given offset.
      *
@@ -116,7 +106,6 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
     {
         return $this->items[$key];
     }
-
 
     /**
      * Set the item at a given offset.
@@ -135,7 +124,6 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
         }
     }
 
-
     /**
      * Unset the item at a given offset.
      *
@@ -148,7 +136,6 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
         unset($this->items[$key]);
     }
 
-
     /**
      * Get an iterator for the items.
      *
@@ -159,7 +146,6 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
         return new ArrayIterator($this->items);
     }
 
-
     /**
      * Convert the collection to its string representation.
      *
@@ -169,7 +155,6 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
     {
         return json_encode($this->jsonSerialize(), $options);
     }
-
 
     /**
      * Convert the object into something JSON serializable.
@@ -191,14 +176,12 @@ class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerial
         }, $this->get());
     }
 
-
     private function get(): array
     {
         return array_merge([
-            '@attributes' => $this->attributes
+            '@attributes' => $this->attributes,
         ], $this->items);
     }
-
 
     /**
      * Get the collection of items as a plain array.

@@ -2,27 +2,26 @@
 
 namespace ACFBentveld\XML;
 
-use ACFBentveld\XML\Exporters\ArrayExporter;
 use ACFBentveld\XML\Exporters\ViewExporter;
+use ACFBentveld\XML\Exporters\ArrayExporter;
 
 /**
- * A Laravel XML Import & Export package
+ * A Laravel XML Import & Export package.
  */
 class XML
 {
     /**
-     * Optimize with underscores type
+     * Optimize with underscores type.
      */
     public const OPTIMIZE_UNDERSCORE = 'underscore';
 
     /**
-     * Optimize as camelCase type
+     * Optimize as camelCase type.
      */
     public const OPTIMIZE_CAMELCASE = 'camelcase';
 
-
     /**
-     * Export a array to xml
+     * Export a array to xml.
      *
      * @param array $data - the data to export
      *
@@ -34,9 +33,8 @@ class XML
         return new ArrayExporter($data);
     }
 
-
     /**
-     * Export a view to laravel
+     * Export a view to laravel.
      *
      * @param string $viewName - the name of the view
      * @param array  $data     - the data to pass to the view
@@ -48,9 +46,8 @@ class XML
         return new ViewExporter($viewName, $data);
     }
 
-
     /**
-     * Import a xml file from a path
+     * Import a xml file from a path.
      *
      * @param string $path - the path of the xml file. Can be a url/
      *

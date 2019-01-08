@@ -2,9 +2,9 @@
 
 namespace ACFBentveld\XML\Exporters;
 
-use ACFBentveld\XML\XMLBuilder;
-use DOMDocument;
 use DOMNode;
+use DOMDocument;
+use ACFBentveld\XML\XMLBuilder;
 
 class ArrayExporter extends XMLBuilder implements Exporter
 {
@@ -49,9 +49,8 @@ class ArrayExporter extends XMLBuilder implements Exporter
         return $document->saveXML();
     }
 
-
     /**
-     * Save the xml to a file
+     * Save the xml to a file.
      *
      * @param string $path - the path to the file
      */
