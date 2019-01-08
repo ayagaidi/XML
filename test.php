@@ -14,7 +14,7 @@ class Note extends \Illuminate\Database\Eloquent\Model
     ];
 }
 
-$path = __DIR__ . '/tests/Features/Import/stubs/plants.xml';
+$path = __DIR__ . '/tests/Features/Import/stubs/notes.xml';
 
 $xml = XML::import($path)
     //->cast('note')->to(Note::class)
@@ -22,7 +22,7 @@ $xml = XML::import($path)
     //->optimize('camelcase')
     ->get();
 
-dd($xml);
+dd($xml->note->completed_at != "");
 
 //
 //$xml = XML::import($path)
