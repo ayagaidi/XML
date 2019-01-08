@@ -1,4 +1,4 @@
-<notes>
+<notes count="1">
     <note completed="true">
         <to.user>test</to.user>
         <to attr="test">Foo</to>

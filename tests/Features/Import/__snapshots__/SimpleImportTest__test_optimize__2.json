@@ -9,8 +9,12 @@
       "from": "Bar",
       "heading": "Baz",
       "body": "FooBar!",
-      "created_at": {},
-      "updated_at": {},
+      "created_at": {
+        "@attributes": null
+      },
+      "updated_at": {
+        "@attributes": null
+      },
       "completed_at": "01-01-1970 12:00"
     },
     {
@@ -22,8 +26,12 @@
       "heading": "Baz",
       "body": "FooBar!",
       "created_at": "01-01-1970 10:00",
-      "updated_at": {},
-      "completed_at": {}
+      "updated_at": {
+        "@attributes": null
+      },
+      "completed_at": {
+        "@attributes": null
+      }
     }
   ]
 }

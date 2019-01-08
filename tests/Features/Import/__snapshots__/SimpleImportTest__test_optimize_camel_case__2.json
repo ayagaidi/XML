@@ -9,9 +9,13 @@
       "from": "Bar",
       "heading": "Baz",
       "body": "FooBar!",
-      "created_at": {},
-      "updated_at": {},
-      "completed_at": "01-01-1970 12:00"
+      "createdAt": {
+        "@attributes": null
+      },
+      "updatedAt": {
+        "@attributes": null
+      },
+      "completedAt": "01-01-1970 12:00"
     },
     {
       "@attributes": {
@@ -21,9 +25,13 @@
       "from": "Bar",
       "heading": "Baz",
       "body": "FooBar!",
-      "created_at": "01-01-1970 10:00",
-      "updated_at": {},
-      "completed_at": {}
+      "createdAt": "01-01-1970 10:00",
+      "updatedAt": {
+        "@attributes": null
+      },
+      "completedAt": {
+        "@attributes": null
+      }
     }
   ]
 }

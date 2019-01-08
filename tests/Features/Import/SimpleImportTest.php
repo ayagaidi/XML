@@ -2,35 +2,60 @@
 
 namespace ACFBentveld\XML\Tests\Features\Import;
 
-use ACFBentveld\XML\XML;
 use ACFBentveld\XML\Tests\TestCase;
+use ACFBentveld\XML\XML;
 
 /**
  * This test is based on version 1.* of the package. This will change in v2.
  */
 class SimpleImportTest extends TestCase
 {
-    public function test_import()
-    {
-        $path = __DIR__.'/stubs/simple.xml';
-        $xml = XML::path($path)->raw();
-        $this->assertMatchesJsonSnapshot(json_encode($xml));
-    }
-
-    public function test_import_optimized()
-    {
-        $path = __DIR__.'/stubs/simple.xml';
-        $xml = XML::path($path)->optimize()->object();
-        $this->assertMatchesJsonSnapshot(json_encode($xml));
-
-        $xml = XML::path($path)->optimize()->collect();
-        $this->assertMatchesJsonSnapshot(json_encode($xml));
-    }
-
     public function test_loads_xml()
     {
         $path = __DIR__.'/stubs/notes.xml';
         $xml = XML::import($path);
+
+        $this->assertMatchesJsonSnapshot($xml->toJson());
+
+        $path = __DIR__ . '/stubs/notes-2.xml';
+        $xml = XML::import($path);
+
+        $this->assertMatchesJsonSnapshot($xml->toJson());
+
+        $path = __DIR__ . '/stubs/plants.xml';
+        $xml = XML::import($path);
+
+        $this->assertMatchesJsonSnapshot($xml->toJson());
+    }
+
+
+    public function test_optimize()
+    {
+        $path = __DIR__ . '/stubs/notes.xml';
+        $xml = XML::import($path)
+            ->optimize();
+
+        $this->assertMatchesJsonSnapshot($xml->toJson());
+
+        $path = __DIR__ . '/stubs/notes-2.xml';
+        $xml = XML::import($path)
+            ->optimize();
+
+        $this->assertMatchesJsonSnapshot($xml->toJson());
+    }
+
+
+    public function test_optimize_camel_case()
+    {
+        $path = __DIR__ . '/stubs/notes.xml';
+        $xml = XML::import($path)
+            ->optimize('camelcase');
+
+        $this->assertMatchesJsonSnapshot($xml->toJson());
+
+        $path = __DIR__ . '/stubs/notes-2.xml';
+        $xml = XML::import($path)
+            ->optimize('camelcase');
 
         $this->assertMatchesJsonSnapshot($xml->toJson());
     }

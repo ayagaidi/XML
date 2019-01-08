@@ -1,9 +1,13 @@
 {
+  "@attributes": {
+    "count": "1"
+  },
   "note": [
     {
       "@attributes": {
         "completed": "true"
       },
+      "to.user": "test",
       "to": "Foo",
       "from": "Bar",
       "heading": "Baz",

@@ -6,13 +6,17 @@
     "@attributes": {
       "completed": "true"
     },
-    "to.user": "test",
+    "to_user": "test",
     "to": "Foo",
     "from": "Bar",
     "heading": "Baz",
     "body": "FooBar!",
-    "created_at": {},
-    "updated_at": {},
+    "created_at": {
+      "@attributes": null
+    },
+    "updated_at": {
+      "@attributes": null
+    },
     "completed_at": "01-01-1970 12:00"
   }
 }

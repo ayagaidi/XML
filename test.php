@@ -19,9 +19,10 @@ $path = __DIR__ . '/tests/Features/Import/stubs/notes.xml';
 $xml = XML::import($path)
     //->cast('note')->to(Note::class)
     //->expect('note')->as('array')
-    ->get(true);
+    ->optimize('camelcase')
+    ->toJson();
 
-dump($xml->note->hasAttribute('completed'));
+dump($xml);
 //
 //$xml = XML::import($path)
 //    ->collect();
