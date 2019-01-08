@@ -11,6 +11,7 @@
     - [Getting the raw xml](#getting-the-raw-xml)
 - [Casting](#casting)
 - [Transforming](#transforming)
+- [Optimizing](#optimizing)
 
 
 ## Importing XML
@@ -161,3 +162,38 @@ So lets use
 > `expect()` is just a alias for `transform()` and `as()` is a alias for `with()` that takes a class alias
 
 For more information and examples on transforming checkout the `examples/transforms` folder.
+
+### Optimizing
+
+Some times you have xml that you cannot change that contains weird keys.
+
+```xml
+<to.user>foobar</to.user>
+```
+
+for example. These cannot be accessed by `->to.user` which can be annoying.
+
+Therefore we made a optimize function. By default it just replaces all `spaces`, `dots` and `-` in the xml tags with a `_`.
+
+```php
+$notes = XML::import('notes.xml')
+    ->optmize()
+    ->toArray();
+```
+
+To you want illegal tags the become `camelCase` pass `'camelcase'` to the optimize function.
+
+```php
+
+// notes.xml :
+// <to.user>foobar</to.user>
+
+$notes = XML::import('notes.xml')
+    ->optmize()
+    ->toArray(); // to_user = foobar
+    
+$notes = XML::import('notes.xml')
+    ->optmize('camelcase')
+    ->toArray(); // toUser = foobar
+
+```
