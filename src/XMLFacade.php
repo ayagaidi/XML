@@ -13,6 +13,6 @@ class XMLFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'XML';
+        return XML::class;
     }
 }
