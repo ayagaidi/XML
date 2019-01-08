@@ -5,12 +5,11 @@ namespace ACFBentveld\XML;
 use ACFBentveld\XML\Data\XMLCollection;
 use ACFBentveld\XML\Data\XMLElement;
 use Exception;
-use SimpleXMLElement;
 
 class XMLImporter
 {
     /**
-     * @var SimpleXMLElement the loaded xml
+     * @var XMLElement the loaded xml
      */
     public $xml;
     /**
@@ -28,7 +27,7 @@ class XMLImporter
      *
      * @param string $path - path of the xml file to load
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(string $path)
     {
@@ -44,14 +43,11 @@ class XMLImporter
      */
     private function load()
     {
-        //if (File::exists($this->path)) {
-        if (true) {
-            try {
-                $this->xml = new XMLElement($this->path, null, true);
-                $this->output = new XMLCollection($this->xml);
-            } catch (Exception $exception) {
-                throw $exception;
-            }
+        try {
+            $this->xml = new XMLElement($this->path, null, true);
+            $this->output = new XMLCollection($this->xml);
+        } catch (Exception $exception) {
+            throw $exception;
         }
     }
 
@@ -59,10 +55,21 @@ class XMLImporter
     /**
      * Get the loaded xml.
      *
-     * @return \ACFBentveld\XML\Data\XMLCollection
+     * @return XMLCollection
      */
     public function get()
     {
         return $this->output;
+    }
+
+
+    /**
+     * Get the raw unprocessed xml
+     *
+     * @return XMLElement
+     */
+    public function raw()
+    {
+        return $this->xml;
     }
 }

@@ -19,6 +19,6 @@ class XMLServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('XML', 'ACFBentveld\XML\XML');
+        $this->app->bind('XML', XML::class);
     }
 }
