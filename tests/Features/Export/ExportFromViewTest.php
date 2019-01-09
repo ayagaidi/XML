@@ -2,8 +2,8 @@
 
 namespace ACFBentveld\XML\Tests\Features\Export;
 
-use ACFBentveld\XML\Tests\TestCase;
 use ACFBentveld\XML\XML;
+use ACFBentveld\XML\Tests\TestCase;
 use Illuminate\Support\Facades\View;
 
 class ExportFromViewTest extends TestCase
@@ -43,7 +43,7 @@ class ExportFromViewTest extends TestCase
             ->toString();
         $this->assertMatchesXmlSnapshot($xml);
 
-        $path = "files.xml";
+        $path = 'files.xml';
         XML::exportView('files', $this->data)
             ->setRootTag('files')
             ->version('1.0')

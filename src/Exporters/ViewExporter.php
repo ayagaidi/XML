@@ -32,7 +32,6 @@ class ViewExporter extends XMLBuilder implements Exporter
             .$this->closeRootTag();
     }
 
-
     /**
      * Save the xml to a file.
      *
