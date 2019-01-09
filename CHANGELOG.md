@@ -2,7 +2,11 @@
 
 All notable changes to `XML` will be documented in this file
 
-## 2.0.0 - 2019-01-xx
+## 2.0.1 - 2019-01-09
+
+- Added `toFile()` to view exports
+
+## 2.0.0 - 2019-01-08
 
 - Rewrote everything from scratch
 - Added transformers

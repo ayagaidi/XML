@@ -31,4 +31,15 @@ class ViewExporter extends XMLBuilder implements Exporter
             .$this->data
             .$this->closeRootTag();
     }
+
+
+    /**
+     * Save the xml to a file.
+     *
+     * @param string $path - the path to the file
+     */
+    public function toFile(string $path)
+    {
+        \File::put($path, $this->toString());
+    }
 }
