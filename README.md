@@ -27,7 +27,7 @@ This packages comes with a facade which you can use like this `\XML::` or use it
 In depth guides can be found here:
 
 * [Exporting](https://acfbentveld.github.io/XML/docs/export)
-* [Importing](https://acfbentveld.github.io/XML/docs/export)
+* [Importing](https://acfbentveld.github.io/XML/docs/import)
 
 
 ```php
