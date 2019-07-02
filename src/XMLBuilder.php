@@ -43,7 +43,6 @@ class XMLBuilder
      */
     protected $forceItemName = false;
 
-
     /**
      * XMLBuilder constructor.
      *
@@ -56,7 +55,6 @@ class XMLBuilder
         $this->version = $version;
     }
 
-
     /**
      * Disable the root tag.
      *
@@ -66,7 +64,6 @@ class XMLBuilder
     {
         return $this->setRootTag(false);
     }
-
 
     /**
      * Set the root tag for the document.
@@ -82,7 +79,6 @@ class XMLBuilder
         return $this;
     }
 
-
     /**
      * Set the data.
      *
@@ -96,7 +92,6 @@ class XMLBuilder
 
         return $this;
     }
-
 
     /**
      * Handle dynamic setters for `version`, `rootTag`, `itemName` and `encoding`.
@@ -120,7 +115,6 @@ class XMLBuilder
         return $this;
     }
 
-
     /**
      * Force item name usage.
      *
@@ -135,7 +129,6 @@ class XMLBuilder
         return $this;
     }
 
-
     /**
      * Make the XML Prolog tag.
      *
@@ -143,9 +136,8 @@ class XMLBuilder
      */
     protected function getProlog(): string
     {
-        return "<?xml version=\"{$this->version}\" encoding=\"{$this->encoding}\"?>" . PHP_EOL;
+        return "<?xml version=\"{$this->version}\" encoding=\"{$this->encoding}\"?>".PHP_EOL;
     }
-
 
     /**
      * Make the root tag. Returns `null` if the root tag is disabled.
@@ -154,9 +146,8 @@ class XMLBuilder
      */
     protected function openRootTag()
     {
-        return !$this->rootTag ? null : "<{$this->rootTag}>";
+        return ! $this->rootTag ? null : "<{$this->rootTag}>";
     }
-
 
     /**
      * Make the closing tag for the root tag. Returns `null` if the root tag is disabled.
@@ -165,9 +156,8 @@ class XMLBuilder
      */
     protected function closeRootTag()
     {
-        return !$this->rootTag ? null : "</{$this->rootTag}>";
+        return ! $this->rootTag ? null : "</{$this->rootTag}>";
     }
-
 
     /**
      * Generates the name for top-level tags.
@@ -185,13 +175,12 @@ class XMLBuilder
      */
     protected function getFieldName($field): string
     {
-        if (!is_string($field)) {
+        if (! is_string($field)) {
             return $this->rootTag === self::DEFAULT_ROOT || $this->forceItemName ? $this->itemName : Str::singular($this->rootTag);
         }
 
         return $field;
     }
-
 
     /**
      * Generates the name for fields where the name is a number.
@@ -208,10 +197,9 @@ class XMLBuilder
         return $this->forceItemName ? $this->itemName : Str::singular($field);
     }
 
-
     /**
      * Check whether the given array is associative or sequential.
-     * Returns true if its associative
+     * Returns true if its associative.
      *
      * @param array $array
      *
