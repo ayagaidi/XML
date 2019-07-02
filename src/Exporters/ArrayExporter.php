@@ -20,6 +20,18 @@ class ArrayExporter extends XMLBuilder implements Exporter
         $this->data = $data;
     }
 
+
+    /**
+     * Save the xml to a file.
+     *
+     * @param string $path - the path to the file
+     */
+    public function toFile(string $path)
+    {
+        \File::put($path, $this->toString());
+    }
+
+
     /**
      * Generate xml based on a array.
      *
@@ -40,7 +52,6 @@ class ArrayExporter extends XMLBuilder implements Exporter
                 $document = $this->walkArray($value, $field, $document, $root);
                 continue;
             }
-
             $field = $this->getFieldName($field);
             $element = $document->createElement($field, $value);
             $root->appendChild($element);
@@ -49,15 +60,6 @@ class ArrayExporter extends XMLBuilder implements Exporter
         return $document->saveXML();
     }
 
-    /**
-     * Save the xml to a file.
-     *
-     * @param string $path - the path to the file
-     */
-    public function toFile(string $path)
-    {
-        \File::put($path, $this->toString());
-    }
 
     /**
      * Walk over a array of values and add those values to the xml.
@@ -71,19 +73,37 @@ class ArrayExporter extends XMLBuilder implements Exporter
      */
     private function walkArray(array $values, string $name, DOMDocument &$document, DOMNode $root): DOMDocument
     {
-        foreach ($values as $value) {
+        $rootElement = $document->createElement($name);
+
+        foreach ($values as $fieldName => $value) {
+            if (!is_string($fieldName)) {
+                $fieldName = $this->getFieldName($name);
+            }
             if (is_array($value)) {
-                $element = $document->createElement($name);
-                $parent = $root->appendChild($element);
-                $this->createMultiple($name, $value, $document, $parent);
+                $element = $document->createElement($fieldName);
+
+                if ($this->is_assoc($value)) {
+                    $parent = $rootElement->appendChild($element);
+                } else {
+                    $parent = $root->appendChild($element);
+                }
+
+                $this->createMultiple($fieldName, $value, $document, $parent);
                 continue;
             }
-            $element = $document->createElement($name, $value);
-            $root->appendChild($element);
+            $element = $document->createElement($fieldName, $value);
+
+            if ($this->is_assoc($values)) {
+                $root->appendChild($element);
+            } else {
+                $rootElement->appendChild($element);
+                $root->appendChild($rootElement);
+            }
         }
 
         return $document;
     }
+
 
     /**
      * Recursively create multiple xml children with the same name.
@@ -101,11 +121,17 @@ class ArrayExporter extends XMLBuilder implements Exporter
                 if (is_string($field)) {
                     $element = $document->createElement($field);
                     $child = $parent->appendChild($element);
+                    $name = $field;
                 }
 
                 $this->createMultiple($name, $value, $document, $child);
                 continue;
             }
+
+            if (is_numeric($field)) {
+                $field = $this->generateFieldName($name);
+            }
+
             $element = $document->createElement($field, $value);
             $parent->appendChild($element);
         }
