@@ -2,19 +2,19 @@
 
 namespace ACFBentveld\XML\Data;
 
-use Countable;
+use ACFBentveld\XML\Casts\Cast;
+use ACFBentveld\XML\Casts\PendingCast;
+use ACFBentveld\XML\Transformers\PendingTransform;
+use ACFBentveld\XML\Transformers\Transformable;
+use ACFBentveld\XML\XML;
 use ArrayAccess;
 use ArrayIterator;
-use JsonSerializable;
-use IteratorAggregate;
-use ACFBentveld\XML\XML;
-use ACFBentveld\XML\Casts\Cast;
-use Illuminate\Support\Collection;
-use ACFBentveld\XML\Casts\PendingCast;
-use Illuminate\Contracts\Support\Jsonable;
+use Countable;
 use Illuminate\Contracts\Support\Arrayable;
-use ACFBentveld\XML\Transformers\Transformable;
-use ACFBentveld\XML\Transformers\PendingTransform;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Collection;
+use IteratorAggregate;
+use JsonSerializable;
 
 class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {
@@ -27,13 +27,31 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     private $items;
 
     /**
+     * @var XMLElement the loaded xml
+     */
+    private $raw;
+
+    /**
      * XMLCollection constructor.
      *
      * @param $items
      */
     public function __construct($items)
     {
+        $this->raw = $items;
         $this->items = new XMLObject((array) $items);
+    }
+
+
+    /**
+     * Returns the raw xml data
+     *
+     * @return \ACFBentveld\XML\Data\XMLElement
+     * @author Amando Vledder <amando@nugtr.nl>
+     */
+    public function raw()
+    {
+        return $this->raw;
     }
 
     /**
@@ -70,6 +88,32 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return $this->items->{$key};
     }
+
+
+    /**
+     * Update a value in the XML
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function __set($name, $value)
+    {
+        $this->items->{$name} = $value;
+    }
+
+
+    /**
+     * Check if an item in the xml isset
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        return isset($this->items->{$name});
+    }
+
 
     /**
      * Alias for transform.

@@ -2,6 +2,14 @@
 
 All notable changes to `XML` will be documented in this file
 
+## 2.1.1 - 2019-07-04
+
+- Fixed `raw()` not working. [See issue #12](https://github.com/ACFBentveld/XML/issues/12)
+
+## 2.1.0 - 2019-07-02
+
+- Fixed a bug where value only arrays where not generating the right keys when they are nested
+
 ## 2.0.1 - 2019-01-09
 
 - Added `toFile()` to view exports
