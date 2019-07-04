@@ -51,11 +51,15 @@ class XML
      *
      * @param string $path - the path of the xml file. Can be a url/
      *
-     * @return \ACFBentveld\XML\Data\XMLCollection
+     * @param bool   $raw  - set to true to return raw xml data
+     *
+     * @return \ACFBentveld\XML\Data\XMLCollection|\ACFBentveld\XML\Data\XMLElement
      * @throws \Exception
      */
-    public static function import(string $path)
+    public static function import(string $path, bool $raw = false)
     {
-        return (new XMLImporter($path))->get();
+        $import = new XMLImporter($path);
+
+        return $raw ? $import->raw() : $import->get();
     }
 }

@@ -27,13 +27,30 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     private $items;
 
     /**
+     * @var XMLElement the loaded xml
+     */
+    private $raw;
+
+    /**
      * XMLCollection constructor.
      *
      * @param $items
      */
     public function __construct($items)
     {
+        $this->raw = $items;
         $this->items = new XMLObject((array) $items);
+    }
+
+    /**
+     * Returns the raw xml data.
+     *
+     * @return \ACFBentveld\XML\Data\XMLElement
+     * @author Amando Vledder <amando@nugtr.nl>
+     */
+    public function raw()
+    {
+        return $this->raw;
     }
 
     /**
@@ -69,6 +86,29 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     public function __get($key)
     {
         return $this->items->{$key};
+    }
+
+    /**
+     * Update a value in the XML.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function __set($name, $value)
+    {
+        $this->items->{$name} = $value;
+    }
+
+    /**
+     * Check if an item in the xml isset.
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
+    public function __isset($name)
+    {
+        return isset($this->items->{$name});
     }
 
     /**
