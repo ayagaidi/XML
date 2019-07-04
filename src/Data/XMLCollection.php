@@ -2,19 +2,19 @@
 
 namespace ACFBentveld\XML\Data;
 
-use ACFBentveld\XML\Casts\Cast;
-use ACFBentveld\XML\Casts\PendingCast;
-use ACFBentveld\XML\Transformers\PendingTransform;
-use ACFBentveld\XML\Transformers\Transformable;
-use ACFBentveld\XML\XML;
+use Countable;
 use ArrayAccess;
 use ArrayIterator;
-use Countable;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
-use Illuminate\Support\Collection;
-use IteratorAggregate;
 use JsonSerializable;
+use IteratorAggregate;
+use ACFBentveld\XML\XML;
+use ACFBentveld\XML\Casts\Cast;
+use Illuminate\Support\Collection;
+use ACFBentveld\XML\Casts\PendingCast;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
+use ACFBentveld\XML\Transformers\Transformable;
+use ACFBentveld\XML\Transformers\PendingTransform;
 
 class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {
@@ -42,9 +42,8 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         $this->items = new XMLObject((array) $items);
     }
 
-
     /**
-     * Returns the raw xml data
+     * Returns the raw xml data.
      *
      * @return \ACFBentveld\XML\Data\XMLElement
      * @author Amando Vledder <amando@nugtr.nl>
@@ -89,9 +88,8 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         return $this->items->{$key};
     }
 
-
     /**
-     * Update a value in the XML
+     * Update a value in the XML.
      *
      * @param string $name
      * @param mixed  $value
@@ -101,9 +99,8 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
         $this->items->{$name} = $value;
     }
 
-
     /**
-     * Check if an item in the xml isset
+     * Check if an item in the xml isset.
      *
      * @param string $name
      *
@@ -113,7 +110,6 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
     {
         return isset($this->items->{$name});
     }
-
 
     /**
      * Alias for transform.

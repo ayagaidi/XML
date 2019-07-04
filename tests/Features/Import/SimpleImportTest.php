@@ -2,9 +2,9 @@
 
 namespace ACFBentveld\XML\Tests\Features\Import;
 
-use ACFBentveld\XML\Data\XMLElement;
-use ACFBentveld\XML\Tests\TestCase;
 use ACFBentveld\XML\XML;
+use ACFBentveld\XML\Tests\TestCase;
+use ACFBentveld\XML\Data\XMLElement;
 
 class SimpleImportTest extends TestCase
 {
@@ -56,10 +56,9 @@ class SimpleImportTest extends TestCase
         $this->assertMatchesJsonSnapshot($xml->toJson());
     }
 
-
     public function test_raw()
     {
-        $path = __DIR__ . '/stubs/plants.xml';
+        $path = __DIR__.'/stubs/plants.xml';
         $xml = XML::import($path)->raw();
 
         $this->assertInstanceOf(XMLElement::class, $xml);
