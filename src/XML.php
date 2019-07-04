@@ -2,8 +2,8 @@
 
 namespace ACFBentveld\XML;
 
-use ACFBentveld\XML\Exporters\ArrayExporter;
 use ACFBentveld\XML\Exporters\ViewExporter;
+use ACFBentveld\XML\Exporters\ArrayExporter;
 
 /**
  * A Laravel XML Import & Export package.
@@ -46,7 +46,6 @@ class XML
         return new ViewExporter($viewName, $data);
     }
 
-
     /**
      * Import a xml file from a path.
      *
@@ -60,6 +59,7 @@ class XML
     public static function import(string $path, bool $raw = false)
     {
         $import = new XMLImporter($path);
+
         return $raw ? $import->raw() : $import->get();
     }
 }
