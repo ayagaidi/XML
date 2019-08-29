@@ -78,9 +78,9 @@ class ArrayExporter extends XMLBuilder implements Exporter
             }
             if (is_array($value)) {
                 $element = $document->createElement($fieldName);
-
                 if ($this->is_assoc($value)) {
-                    $parent = $rootElement->appendChild($element);
+                    $element = $document->createElement($name);
+                    $parent = $root->appendChild($element);
                 } else {
                     $parent = $root->appendChild($element);
                 }
@@ -89,7 +89,6 @@ class ArrayExporter extends XMLBuilder implements Exporter
                 continue;
             }
             $element = $document->createElement($fieldName, $value);
-
             if ($this->is_assoc($values)) {
                 $root->appendChild($element);
             } else {
@@ -111,6 +110,7 @@ class ArrayExporter extends XMLBuilder implements Exporter
      */
     private function createMultiple(string $name, array $values, DOMDocument &$document, DOMNode &$parent)
     {
+
         foreach ($values as $field => $value) {
             if (is_array($value)) {
                 $child = $parent;
@@ -123,7 +123,6 @@ class ArrayExporter extends XMLBuilder implements Exporter
                 $this->createMultiple($name, $value, $document, $child);
                 continue;
             }
-
             if (is_numeric($field)) {
                 $field = $this->generateFieldName($name);
             }
