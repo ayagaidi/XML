@@ -11,21 +11,21 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Wim Pruiksma",
-      "email": "wim@acfbentveld.nl",
+      "name": "Amando Vledder",
+      "email": "amando@acfbentveld.nl",
       "homepage": "https://acfbentveld.nl/",
-      "role": "Lead developer"
+      "role": "Developer"
     }
   ],
   "require": {
-    "php": "^7.1",
-    "illuminate/support": "5.*",
+    "php": "^7.2",
+    "illuminate/support": "5.*|6.*",
     "ext-dom": "*",
     "ext-simplexml": "*",
     "ext-json": "*"
   },
   "require-dev": {
-    "orchestra/testbench": "~3.5.0|~3.6.0|~3.7.0",
+    "orchestra/testbench": "~3.5.0|~3.6.0|~3.7.0|~4.0.0",
     "phpunit/phpunit": "^7.0",
     "spatie/phpunit-snapshot-assertions": "^1.3"
   },
