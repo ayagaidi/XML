@@ -2,9 +2,9 @@
 
 namespace ACFBentveld\XML\Exporters;
 
-use DOMNode;
-use DOMDocument;
 use ACFBentveld\XML\XMLBuilder;
+use DOMDocument;
+use DOMNode;
 
 class ArrayExporter extends XMLBuilder implements Exporter
 {

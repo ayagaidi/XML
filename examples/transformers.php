@@ -2,10 +2,10 @@
 
 require_once '../vendor/autoload.php';
 
-use ACFBentveld\XML\XML;
 use ACFBentveld\XML\Data\XMLElement;
-use ACFBentveld\XML\Transformers\Transformer;
 use ACFBentveld\XML\Transformers\ArrayTransformer;
+use ACFBentveld\XML\Transformers\Transformer;
+use ACFBentveld\XML\XML;
 
 // We offer a array transformer by default that wraps the item with array_wrap
 

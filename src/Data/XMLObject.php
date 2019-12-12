@@ -2,13 +2,13 @@
 
 namespace ACFBentveld\XML\Data;
 
-use Countable;
 use ArrayAccess;
 use ArrayIterator;
-use JsonSerializable;
-use IteratorAggregate;
-use Illuminate\Contracts\Support\Jsonable;
+use Countable;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use IteratorAggregate;
+use JsonSerializable;
 
 class XMLObject implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {

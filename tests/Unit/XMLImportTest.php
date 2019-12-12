@@ -2,8 +2,8 @@
 
 namespace ACFBentveld\XML\Tests\Unit;
 
-use ACFBentveld\XML\XML;
 use ACFBentveld\XML\Tests\TestCase;
+use ACFBentveld\XML\XML;
 
 class XMLImportTest extends TestCase
 {

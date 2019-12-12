@@ -2,8 +2,8 @@
 
 namespace ACFBentveld\XML;
 
-use ACFBentveld\XML\Exporters\ViewExporter;
 use ACFBentveld\XML\Exporters\ArrayExporter;
+use ACFBentveld\XML\Exporters\ViewExporter;
 
 /**
  * A Laravel XML Import & Export package.

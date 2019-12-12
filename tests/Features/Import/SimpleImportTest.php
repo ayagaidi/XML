@@ -2,9 +2,9 @@
 
 namespace ACFBentveld\XML\Tests\Features\Import;
 
-use ACFBentveld\XML\XML;
-use ACFBentveld\XML\Tests\TestCase;
 use ACFBentveld\XML\Data\XMLElement;
+use ACFBentveld\XML\Tests\TestCase;
+use ACFBentveld\XML\XML;
 
 class SimpleImportTest extends TestCase
 {
