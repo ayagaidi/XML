@@ -3,10 +3,10 @@
 namespace ACFBentveld\XML\Tests;
 
 use ACFBentveld\XML\XMLFacade;
-use Spatie\Snapshots\MatchesSnapshots;
 use ACFBentveld\XML\XMLServiceProvider;
 use Illuminate\Support\Facades\Artisan;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Spatie\Snapshots\MatchesSnapshots;
 
 abstract class TestCase extends Orchestra
 {

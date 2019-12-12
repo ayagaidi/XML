@@ -2,8 +2,8 @@
 
 namespace ACFBentveld\XML\Tests\Features\Export;
 
-use ACFBentveld\XML\XML;
 use ACFBentveld\XML\Tests\TestCase;
+use ACFBentveld\XML\XML;
 
 class ExportFromDataTest extends TestCase
 {

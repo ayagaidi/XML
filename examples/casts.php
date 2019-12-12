@@ -2,8 +2,8 @@
 
 require_once '../vendor/autoload.php';
 
-use ACFBentveld\XML\XML;
 use ACFBentveld\XML\Casts\Castable;
+use ACFBentveld\XML\XML;
 
 // ===============
 // Model cast

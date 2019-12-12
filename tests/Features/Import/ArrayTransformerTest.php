@@ -2,9 +2,9 @@
 
 namespace ACFBentveld\XML\Tests\Features\Import;
 
-use ACFBentveld\XML\XML;
 use ACFBentveld\XML\Tests\TestCase;
 use ACFBentveld\XML\Transformers\ArrayTransformer;
+use ACFBentveld\XML\XML;
 
 class ArrayTransformerTest extends TestCase
 {
