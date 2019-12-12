@@ -2,9 +2,9 @@
 
 namespace ACFBentveld\XML;
 
-use Exception;
-use ACFBentveld\XML\Data\XMLElement;
 use ACFBentveld\XML\Data\XMLCollection;
+use ACFBentveld\XML\Data\XMLElement;
+use Exception;
 
 class XMLImporter
 {
@@ -42,7 +42,7 @@ class XMLImporter
     private function load()
     {
         try {
-            $this->xml = new XMLElement($this->path, null, true);
+            $this->xml = new XMLElement($this->path, null, filter_var($this->path, FILTER_VALIDATE_URL) || file_exists($this->path));
             $this->output = new XMLCollection($this->xml);
         } catch (Exception $exception) {
             throw $exception;

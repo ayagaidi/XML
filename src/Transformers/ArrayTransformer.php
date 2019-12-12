@@ -2,6 +2,8 @@
 
 namespace ACFBentveld\XML\Transformers;
 
+use Illuminate\Support\Arr;
+
 class ArrayTransformer implements Transformer
 {
     /**
@@ -13,6 +15,6 @@ class ArrayTransformer implements Transformer
      */
     public static function apply($data)
     {
-        return array_wrap($data);
+        return Arr::wrap($data);
     }
 }

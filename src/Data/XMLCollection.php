@@ -2,19 +2,20 @@
 
 namespace ACFBentveld\XML\Data;
 
-use Countable;
+use ACFBentveld\XML\Casts\Cast;
+use ACFBentveld\XML\Casts\PendingCast;
+use ACFBentveld\XML\Transformers\PendingTransform;
+use ACFBentveld\XML\Transformers\Transformable;
+use ACFBentveld\XML\XML;
 use ArrayAccess;
 use ArrayIterator;
-use JsonSerializable;
-use IteratorAggregate;
-use ACFBentveld\XML\XML;
-use ACFBentveld\XML\Casts\Cast;
-use Illuminate\Support\Collection;
-use ACFBentveld\XML\Casts\PendingCast;
-use Illuminate\Contracts\Support\Jsonable;
+use Countable;
 use Illuminate\Contracts\Support\Arrayable;
-use ACFBentveld\XML\Transformers\Transformable;
-use ACFBentveld\XML\Transformers\PendingTransform;
+use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use IteratorAggregate;
+use JsonSerializable;
 
 class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSerializable
 {
@@ -300,7 +301,7 @@ class XMLCollection implements ArrayAccess, Countable, IteratorAggregate, JsonSe
             };
         } elseif ($this->optimize === XML::OPTIMIZE_CAMELCASE) {
             $method = function ($key) {
-                return camel_case(str_replace('.', '_', $key));
+                return Str::camel(str_replace('.', '_', $key));
             };
         } else {
             return $this->items;
