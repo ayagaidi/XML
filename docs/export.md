@@ -11,6 +11,7 @@
 - [Changing the <item> name](#changing-the-item-name)
     - [Using a custom <root> and <item> name.](#using-a-custom-root-and-item-name)
 - [Exporting views](#exporting-views)
+- [Pretty output](#pretty-output)
 
 ## Exporting data to XML
 An easy way to export your data to XML is using the `XML::export` method. This method can load views or translate arrays to XML.
@@ -193,4 +194,19 @@ To export a view simply call `exportView($viewName, $data = [])`
 
 $xml = XML::exportView('my-view', [])
     ->toString();
+```
+
+### Pretty output
+
+By default, the exported XML will be minified. To get the XML in a pretty format pass `true` to the `toString()` method.
+Or you can use `usePrettyOutput()` when using the `toFile()` method.
+
+```php
+
+$xml = XML::export($data)
+    ->toString(true);
+    
+XML::export($data)
+    ->usePrettyOutput()
+    ->toFile($filename);
 ```
