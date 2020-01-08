@@ -13,7 +13,6 @@ class ArrayExporter extends XMLBuilder implements Exporter
      */
     private $prettyOutput = false;
 
-
     /**
      * ArrayExporter constructor.
      *
@@ -26,7 +25,6 @@ class ArrayExporter extends XMLBuilder implements Exporter
         $this->data = $data;
     }
 
-
     /**
      *  When used the XML will be formatted when outputted.
      *
@@ -35,9 +33,9 @@ class ArrayExporter extends XMLBuilder implements Exporter
     public function usePrettyOutput()
     {
         $this->prettyOutput = true;
+
         return $this;
     }
-
 
     /**
      * Save the xml to a file.
@@ -48,7 +46,6 @@ class ArrayExporter extends XMLBuilder implements Exporter
     {
         \File::put($path, $this->toString());
     }
-
 
     /**
      * Generate xml based on a array.
@@ -85,7 +82,6 @@ class ArrayExporter extends XMLBuilder implements Exporter
         return $document->saveXML();
     }
 
-
     /**
      * Walk over a array of values and add those values to the xml.
      *
@@ -101,7 +97,7 @@ class ArrayExporter extends XMLBuilder implements Exporter
         $rootElement = $document->createElement($name);
 
         foreach ($values as $fieldName => $value) {
-            if (!is_string($fieldName)) {
+            if (! is_string($fieldName)) {
                 $fieldName = $this->getFieldName($name);
             }
             if (is_array($value)) {
@@ -110,7 +106,7 @@ class ArrayExporter extends XMLBuilder implements Exporter
                 if (empty($value)) {
                     $element = $document->createElement($name);
                     $parent = $root->appendChild($element);
-                } elseif ($this->is_assoc($value) && !empty($value)) {
+                } elseif ($this->is_assoc($value) && ! empty($value)) {
                     if ($rootElement->parentNode === null) {
                         $element = $document->createElement($name);
                         $parent = $root->appendChild($element);
@@ -136,7 +132,6 @@ class ArrayExporter extends XMLBuilder implements Exporter
 
         return $document;
     }
-
 
     /**
      * Recursively create multiple xml children with the same name.
