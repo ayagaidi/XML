@@ -9,6 +9,11 @@ use DOMNode;
 class ArrayExporter extends XMLBuilder implements Exporter
 {
     /**
+     * @var bool - when true the outputted XML will be formatted.
+     */
+    private $prettyOutput = false;
+
+    /**
      * ArrayExporter constructor.
      *
      * @param $data - data to use
@@ -18,6 +23,18 @@ class ArrayExporter extends XMLBuilder implements Exporter
         parent::__construct();
 
         $this->data = $data;
+    }
+
+    /**
+     *  When used the XML will be formatted when outputted.
+     *
+     * @return $this
+     */
+    public function usePrettyOutput()
+    {
+        $this->prettyOutput = true;
+
+        return $this;
     }
 
     /**
@@ -33,9 +50,11 @@ class ArrayExporter extends XMLBuilder implements Exporter
     /**
      * Generate xml based on a array.
      *
+     * @param bool|null $prettyOutput when true the outputted XML will be formatted.
+     *
      * @return string
      */
-    public function toString(): string
+    public function toString(?bool $prettyOutput = null): string
     {
         $document = new DOMDocument($this->version, $this->encoding);
         $root = $document->documentElement;
@@ -53,6 +72,11 @@ class ArrayExporter extends XMLBuilder implements Exporter
             $field = $this->getFieldName($field);
             $element = $document->createElement($field, $value);
             $root->appendChild($element);
+        }
+
+        if ($this->prettyOutput || $prettyOutput) {
+            $document->preserveWhiteSpace = false;
+            $document->formatOutput = true;
         }
 
         return $document->saveXML();
